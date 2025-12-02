@@ -32,7 +32,7 @@
 
 <script setup lang="ts">
 import { watch } from "vue";
-import type { Tpagination } from "../types/product";
+import type { Tpagination } from "../../types/product";
 
 const props = defineProps<{
   pages: Tpagination;
