@@ -2,28 +2,27 @@ import { createRouter, createWebHashHistory } from "vue-router";
 
 const routes = [
   // ==== 前台 =====
-  //   {
-  //     path: "/",
-  //     component: () => import("../pages/user/UserLayout.vue"),
-  //     children: [
-  //       {
-  //         path: "",
-  //         name: "Home",
-  //         component: () => import("../pages/user/Home.vue"),
-  //       },
-  //       {
-  //         path: "menu",
-  //         name: "Menu",
-  //         component: () => import("../pages/user/Menu.vue"),
-  //       },
-  //       {
-  //         path: "about",
-  //         name: "About",
-  //         component: () => import("../pages/user/About.vue"),
-  //       },
-  //     ],
-  //   },
-
+  {
+    path: "/",
+    component: () => import("../pages/client/ClientLayout.vue"),
+    children: [
+      {
+        path: "",
+        name: "Home",
+        component: () => import("../pages/client/Home.vue"),
+      },
+      {
+        path: "menu",
+        name: "Menu",
+        component: () => import("../pages/client/Menu.vue"),
+      },
+      {
+        path: "about",
+        name: "About",
+        component: () => import("../pages/client/About.vue"),
+      },
+    ],
+  },
   // 後台登入
   {
     path: "/login",

@@ -54,9 +54,9 @@ const showToast = (
 
   visible.value = true;
 
-  //   setTimeout(() => {
-  //     visible.value = false;
-  //   }, 3000);
+  setTimeout(() => {
+    visible.value = false;
+  }, 3000);
 };
 
 defineExpose({
