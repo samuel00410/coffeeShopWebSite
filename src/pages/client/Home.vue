@@ -1,7 +1,11 @@
 <template>
-  <div>咖啡廳首頁</div>
+  <div>
+    <HeroSection />
+  </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import HeroSection from "../../components/client/HeroSection.vue";
+</script>
 
 <style scoped></style>

@@ -2,5 +2,5 @@
 @plugin "daisyui";
 
 @theme {
-  --color-nav: #faf7f2;
+  --color-header: #faf7f2; /* example */
 }
