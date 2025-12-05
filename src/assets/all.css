@@ -2,5 +2,10 @@
 @plugin "daisyui";
 
 @theme {
-  --color-header: #faf7f2; /* example */
+  --color-background: #fff5e8; /* 主背景色 */
+  --color-hero-top: #fff9f0; /* Hero 頂部 */
+  --color-hero-bottom: #fffbf5; /* Hero 底部 */
+
+  /* 自訂字體大小 */
+  --text-title: 48px;
 }

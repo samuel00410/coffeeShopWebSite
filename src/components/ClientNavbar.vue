@@ -1,6 +1,6 @@
 <template>
   <header
-    class="sticky top-0 z-50 text-[#4A3D2F] bg-linear-to-b from-[#FFFBF5] via-[#FFF9F0] to-[#FFF9F0]/80 backdrop-blur-smborder-b-2 border-[#4A3D2F]"
+    class="sticky top-0 z-50 text-[#4A3D2F] bg-linear-to-b from-[#FFFBF5] via-[#FFF9F0] to-[#FFF9F0]/80 backdrop-blur-sm border-b-2 border-[#4A3D2F]"
   >
     <nav class="navbar container mx-auto">
       <div class="navbar-start">
