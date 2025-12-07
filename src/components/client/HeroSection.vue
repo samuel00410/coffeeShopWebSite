@@ -54,11 +54,7 @@
           {{ current.description }}
         </p>
 
-        <button
-          class="px-6 py-3 text-xl font-black bg-[#FFD4B0] text-[#4A3D2F] hover:bg-[#FFC098] shadow-[0_4px_0_0_#C4A68A] hover:shadow-[0_6px_0_0_#C4A68A] border-3 border-[#4A3D2F] rounded-full transition-all duration-300 hover:scale-105 active:scale-95"
-        >
-          查看菜單 →
-        </button>
+        <button class="px-6 py-3 btn-primary">查看菜單 →</button>
       </div>
     </Transition>
 
