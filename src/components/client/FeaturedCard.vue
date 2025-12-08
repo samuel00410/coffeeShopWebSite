@@ -15,18 +15,18 @@
     <!-- 圖片 -->
     <figure class="overflow-hidden">
       <img
-        class="group-hover:scale-110 transition-transform duration-500"
-        :src="feProduct1"
+        class="w-[380px] h-[400px] object-cover group-hover:scale-110 transition-transform duration-500"
+        :src="card.img"
         alt="特選產品"
       />
     </figure>
     <div class="card-body">
       <div>
-        <h2 class="card-title text-card-title">世界冠軍拿鐵</h2>
+        <h2 class="card-title text-card-title">{{ card.name }}</h2>
         <p
           class="mb-5 text-left text-card-description line-clamp-2 leading-relaxed font-medium"
         >
-          推薦給不喜歡咖啡苦味的你 (有附捲心酥哦 ! )
+          {{ card.des }}
         </p>
       </div>
       <div
@@ -39,7 +39,7 @@
             💰 價格
           </span>
           <span className="text-xl font-black text-[#6B5444]"
-            >$NT 120 / 杯</span
+            >$NT {{ card.price }} / 杯</span
           >
         </div>
         <button class="btn-primary px-4 py-2 text-sm">+ 加入</button>
@@ -49,8 +49,11 @@
 </template>
 
 <script setup lang="ts">
-import feProduct1 from "../../assets/images/featuredMenu/feProduct1.jpg";
 import { StarIcon } from "@heroicons/vue/24/solid";
+
+const props = defineProps<{
+  card: any;
+}>();
 </script>
 
 <style scoped></style>
