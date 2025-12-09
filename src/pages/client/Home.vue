@@ -1,8 +1,6 @@
 <template>
-  <div class="min-h-screen">
-    <HeroSection />
-    <FeaturedMenuSection />
-  </div>
+  <HeroSection />
+  <FeaturedMenuSection />
 </template>
 
 <script setup lang="ts">

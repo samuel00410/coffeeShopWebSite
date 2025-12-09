@@ -67,7 +67,7 @@ const signIn = async () => {
       localStorage.setItem("hexToken", token);
       localStorage.setItem("hexTokenExpired", expired.toString());
 
-      router.push("/admin");
+      router.push("/admin/dashboard");
     }
   } catch (error) {
     console.error("登入失敗:", error);
