@@ -18,4 +18,20 @@
   .btn-primary {
     @apply text-xl font-black bg-[#FFD4B0] text-[#4A3D2F] hover:bg-[#FFC098] shadow-[0_4px_0_0_#C4A68A] hover:shadow-[0_6px_0_0_#C4A68A] border-3 border-[#4A3D2F] rounded-full transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer;
   }
+
+  .footer-link {
+    @apply text-[#6B5444] hover:text-[#FFB890] transition-colors bg-white flex items-center gap-3 font-bold rounded-full px-4 py-2 hover:shadow-[0_3px_0_0_#E8DBC8] border-2 border-transparent hover:border-[#4A3D2F];
+  }
+
+  .footer-description {
+    @apply text-[#6B5444] font-medium bg-white rounded-2xl border-3 border-[#4A3D2F] shadow-[0_3px_0_0_#E8DBC8];
+  }
+
+  .footer-spot {
+    @apply w-2 h-2 bg-[#FFD4B0] rounded-full group-hover:scale-150 transition-transform;
+  }
+
+  .footer-social-icon {
+    @apply flex items-center justify-center w-12 h-12 bg-white border-2 border-black rounded-full cursor-pointer hover:bg-[#FFF0E8] hover:scale-105 transition-all duration-300;
+  }
 }
