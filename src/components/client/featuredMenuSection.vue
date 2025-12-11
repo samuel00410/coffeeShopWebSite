@@ -72,24 +72,24 @@ import FeaturedCard from "./FeaturedCard.vue";
 const itmes = [
   {
     id: 1,
-    img: feProduct1,
-    name: "世界冠軍拿鐵",
-    des: "推薦給不喜歡咖啡苦味的你 (有附捲心酥哦 ! )",
-    price: 120,
+    imageUrl: feProduct1,
+    title: "世界冠軍拿鐵",
+    description: "推薦給不喜歡咖啡苦味的你 (有附捲心酥哦 ! )",
+    origin_price: 120,
   },
   {
     id: 2,
-    img: feProduct2,
-    name: "麻糬厚奶茶",
-    des: "香濃厚奶茶搭配Q彈麻糬，甜而不膩的絕妙組合！",
-    price: 100,
+    imageUrl: feProduct2,
+    title: "麻糬厚奶茶",
+    description: "香濃厚奶茶搭配Q彈麻糬，甜而不膩的絕妙組合！",
+    origin_price: 100,
   },
   {
     id: 3,
-    img: feProduct3,
-    name: "抹茶紅豆冰沙",
-    des: "清涼抹茶冰沙融合甜蜜紅豆，夏日消暑首選！",
-    price: 130,
+    imageUrl: feProduct3,
+    title: "抹茶紅豆冰沙",
+    description: "清涼抹茶冰沙融合甜蜜紅豆，夏日消暑首選！",
+    origin_price: 130,
   },
 ];
 

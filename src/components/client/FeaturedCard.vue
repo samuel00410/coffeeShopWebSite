@@ -1,6 +1,7 @@
 <template>
   <div
-    class="card group relative max-w-[420px] h-[600px] bg-white overflow-hidden shadow-[0_6px_0_0_#E8DBC8] transition-all duration-300 hover:shadow-[0_10px_0_0_#E8DBC8] rounded-[2rem] border-4 border-[#4A3D2F] hover:-translate-y-1 cursor-pointer"
+    class="card group relative h-[600px] bg-white overflow-hidden shadow-[0_6px_0_0_#E8DBC8] transition-all duration-300 hover:shadow-[0_10px_0_0_#E8DBC8] rounded-[2rem] border-4 border-[#4A3D2F] hover:-translate-y-1 cursor-pointer"
+    :style="{ maxWidth: `${cardWidth}px` }"
   >
     <!-- 熱門標籤 -->
     <div
@@ -16,17 +17,17 @@
     <figure class="overflow-hidden">
       <img
         class="w-[380px] h-[400px] object-cover group-hover:scale-110 transition-transform duration-500"
-        :src="card.img"
+        :src="card.imageUrl"
         alt="特選產品"
       />
     </figure>
     <div class="card-body">
       <div>
-        <h2 class="card-title text-card-title">{{ card.name }}</h2>
+        <h2 class="card-title text-card-title">{{ card.title }}</h2>
         <p
           class="mb-5 text-left text-card-description line-clamp-2 leading-relaxed font-medium"
         >
-          {{ card.des }}
+          {{ card.description }}
         </p>
       </div>
       <div
@@ -39,7 +40,7 @@
             💰 價格
           </span>
           <span className="text-xl font-black text-[#6B5444]"
-            >$NT {{ card.price }} / 杯</span
+            >$NT {{ card.origin_price }} / 杯</span
           >
         </div>
         <button class="btn-primary px-4 py-2 text-sm">+ 加入</button>
@@ -49,11 +50,15 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import { StarIcon } from "@heroicons/vue/24/solid";
 
 const props = defineProps<{
   card: any;
+  width?: number;
 }>();
+
+const cardWidth = computed(() => props.width || 420);
 </script>
 
 <style scoped></style>
