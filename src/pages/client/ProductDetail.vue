@@ -94,6 +94,7 @@
             :key="item.id"
             :card="item"
             :width="350"
+            @click="goProductPage(item.id)"
           />
         </div>
       </div>
@@ -105,7 +106,7 @@
 import ClientLoading from "../../components/client/ClientLoading.vue";
 import FeaturedCard from "../../components/client/FeaturedCard.vue";
 import { ArrowLeftIcon } from "@heroicons/vue/24/outline";
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import type { Product } from "../../types/product";
 import axios from "axios";
@@ -115,6 +116,10 @@ const router = useRouter();
 
 const apiUrl = import.meta.env.VITE_API_URL;
 const apiPath = import.meta.env.VITE_API_PATH;
+
+onMounted(() => {
+  getProduct();
+});
 
 const loading = ref(false);
 const product = ref<Product>({} as Product);
@@ -164,8 +169,6 @@ const getSimilarProducts = async () => {
     );
   });
 
-  console.log("相似商品資料:", filtered);
-
   similarProducts.value = shuffle(filtered).slice(0, 3);
 };
 
@@ -179,13 +182,22 @@ const decrease = () => {
   }
 };
 
-const goBack = () => {
-  router.back();
+const goProductPage = (productId: string) => {
+  router.push({ name: "ProductDetail", params: { productId } });
 };
 
-onMounted(() => {
-  getProduct();
-});
+const goBack = () => {
+  router.push({ name: "Menu" });
+};
+
+watch(
+  () => route.params.productId,
+  (newId) => {
+    if (newId) {
+      getProduct();
+    }
+  }
+);
 </script>
 
 <style scoped></style>
