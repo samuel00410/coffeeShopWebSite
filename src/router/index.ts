@@ -21,6 +21,11 @@ const routes = [
         name: "About",
         component: () => import("../pages/client/About.vue"),
       },
+      {
+        path: "product/:productId",
+        name: "ProductDetail",
+        component: () => import("../pages/client/ProductDetail.vue"),
+      },
     ],
   },
   // 後台登入

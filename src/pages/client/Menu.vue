@@ -65,13 +65,14 @@
 
     <!-- menu展示 -->
     <div
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center sm:justify-items-start"
     >
       <FeaturedCard
         v-for="item in filteredMenu"
         :key="item.id"
         :card="item"
         :width="350"
+        @click="goProductPage(item.id)"
       />
     </div>
   </div>
@@ -87,6 +88,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import FeaturedCard from "../../components/client/FeaturedCard.vue";
 import axios from "axios";
+import { useRouter } from "vue-router";
 
 const categories = [
   { name: "全部", value: "全部" },
@@ -98,6 +100,8 @@ const categories = [
 onMounted(() => {
   getMenuData();
 });
+
+const router = useRouter();
 
 const loading = ref(false);
 const menuData = ref([]);
@@ -127,7 +131,7 @@ const getMenuData = async () => {
   const apiPath = import.meta.env.VITE_API_PATH;
   try {
     loading.value = true;
-    let res = await axios.get(`${apiUrl}/api/${apiPath}/products/all`);
+    const res = await axios.get(`${apiUrl}/api/${apiPath}/products/all`);
 
     if (res.data.success) {
       menuData.value = res.data.products;
@@ -137,6 +141,10 @@ const getMenuData = async () => {
   } finally {
     loading.value = false;
   }
+};
+
+const goProductPage = (productId: string) => {
+  router.push({ name: "ProductDetail", params: { productId } });
 };
 </script>
 
