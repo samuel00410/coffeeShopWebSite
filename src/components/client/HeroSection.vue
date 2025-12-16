@@ -54,7 +54,12 @@
           {{ current.description }}
         </p>
 
-        <button class="px-6 py-3 btn-primary">查看菜單 →</button>
+        <button
+          class="px-6 py-3 btn-primary"
+          @click="$router.push({ name: 'Menu' })"
+        >
+          查看菜單 →
+        </button>
       </div>
     </Transition>
 

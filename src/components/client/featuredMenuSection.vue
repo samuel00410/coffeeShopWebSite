@@ -50,7 +50,11 @@
 
       <div ref="btnRef">
         <Transition name="btn-fade">
-          <button v-if="isBtnVisible" class="btn-primary px-6 py-6">
+          <button
+            v-if="isBtnVisible"
+            class="btn-primary px-6 py-6"
+            @click="$router.push({ name: 'Menu' })"
+          >
             查看完整菜單 →
           </button>
         </Transition>
@@ -68,6 +72,7 @@ import feProduct1 from "../../assets/images/featuredMenu/feProduct1.jpg";
 import feProduct2 from "../../assets/images/featuredMenu/feProduct2.jpg";
 import feProduct3 from "../../assets/images/featuredMenu/feProduct3.jpg";
 import FeaturedCard from "./FeaturedCard.vue";
+import { useRouter } from "vue-router";
 
 const itmes = [
   {
@@ -92,6 +97,8 @@ const itmes = [
     origin_price: 130,
   },
 ];
+
+const router = useRouter();
 
 onMounted(() => {
   cardData.value = itmes;

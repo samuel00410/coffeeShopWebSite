@@ -71,9 +71,11 @@
           </div>
         </div>
 
-        <button
-          class="min-w-[300px] w-[50%] px-10 py-5 text-lg bg-[#FFD4B0] text-[#4A3D2F] hover:bg-[#FFC098] shadow-[0_4px_0_0_#C4A68A] hover:shadow-[0_6px_0_0_#C4A68A] border-3 border-[#4A3D2F] rounded-2xl cursor-pointer"
-        >
+        <button :class="btnClass" @click="addItemToCart(product.id)">
+          <span
+            v-if="status.loadingItem"
+            class="loading loading-spinner"
+          ></span>
           加入購物車 - ${{ totalPrice }}
         </button>
       </div>
@@ -94,7 +96,9 @@
             :key="item.id"
             :card="item"
             :width="350"
-            @click="goProductPage(item.id)"
+            @view-detail="goProductPage"
+            @add-to-cart="addToCart"
+            :disabled="status.loadingItem === item.id"
           />
         </div>
       </div>
@@ -106,7 +110,7 @@
 import ClientLoading from "../../components/client/ClientLoading.vue";
 import FeaturedCard from "../../components/client/FeaturedCard.vue";
 import { ArrowLeftIcon } from "@heroicons/vue/24/outline";
-import { ref, onMounted, computed, watch } from "vue";
+import { ref, onMounted, computed, watch, inject } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import type { Product } from "../../types/product";
 import axios from "axios";
@@ -121,12 +125,25 @@ onMounted(() => {
   getProduct();
 });
 
+const toast = inject<{
+  showCartMsg(msg: string, type: "add" | "remove"): void;
+}>("toast");
+
 const loading = ref(false);
 const product = ref<Product>({} as Product);
 const quantity = ref(1);
 const similarProducts = ref<any>([]); // 相似商品列表
+const status = ref({
+  loadingItem: "",
+});
 
 const totalPrice = computed(() => product.value.price * quantity.value);
+
+const btnClass = computed(() =>
+  status.value.loadingItem
+    ? "min-w-[300px] w-[50%] px-10 py-5 text-lg bg-[#E8DBC8] text-[#A89582] shadow-[0_4px_0_0_#D4C4B0] border-3 border-[#C4B5A0] rounded-2xl cursor-not-allowed "
+    : "min-w-[300px] w-[50%] px-10 py-5 text-lg bg-[#FFD4B0] text-[#4A3D2F] hover:bg-[#FFC098] shadow-[0_4px_0_0_#C4A68A] hover:shadow-[0_6px_0_0_#C4A68A] border-3 border-[#4A3D2F] rounded-2xl cursor-pointer"
+);
 
 const getProduct = async () => {
   const productId = route.params.productId;
@@ -184,6 +201,40 @@ const decrease = () => {
 
 const goProductPage = (productId: string) => {
   router.push({ name: "ProductDetail", params: { productId } });
+};
+
+// 相似產品加入購物車
+const addToCart = async (productId: string) => {
+  try {
+    status.value.loadingItem = productId;
+    const res = await axios.post(`${apiUrl}/api/${apiPath}/cart`, {
+      data: { product_id: productId, qty: 1 },
+    });
+
+    if (res.data.success) {
+      status.value.loadingItem = "";
+      toast?.showCartMsg("已成功加入購物車！", "add");
+    }
+  } catch (err) {
+    console.error("加入購物車失敗:", err);
+  }
+};
+
+// 單一產品加入購物車(可選數量)
+const addItemToCart = async (productId: string) => {
+  try {
+    status.value.loadingItem = productId;
+    const res = await axios.post(`${apiUrl}/api/${apiPath}/cart`, {
+      data: { product_id: productId, qty: quantity.value },
+    });
+
+    if (res.data.success) {
+      status.value.loadingItem = "";
+      toast?.showCartMsg("已成功加入購物車！", "add");
+    }
+  } catch (err) {
+    console.error("加入購物車失敗:", err);
+  }
 };
 
 const goBack = () => {

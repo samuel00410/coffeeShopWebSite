@@ -72,14 +72,16 @@
         :key="item.id"
         :card="item"
         :width="350"
-        @click="goProductPage(item.id)"
+        @view-detail="goProductPage"
+        @add-to-cart="addToCart"
+        :disabled="status.loadingItem === item.id"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, inject } from "vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
   faMenorah,
@@ -97,9 +99,16 @@ const categories = [
   { name: "甜點 🍰", value: "甜點" },
 ];
 
+const apiUrl = import.meta.env.VITE_API_URL;
+const apiPath = import.meta.env.VITE_API_PATH;
+
 onMounted(() => {
   getMenuData();
 });
+
+const toast = inject<{
+  showCartMsg(msg: string, type: "add" | "remove"): void;
+}>("toast");
 
 const router = useRouter();
 
@@ -107,6 +116,9 @@ const loading = ref(false);
 const menuData = ref([]);
 const selectedCategory = ref("全部");
 const viewMode = ref("grid");
+const status = ref({
+  loadingItem: "",
+});
 
 const filteredMenu = computed(() => {
   if (selectedCategory.value === "全部") {
@@ -127,8 +139,6 @@ const modeSelect = (mode: string) => {
 };
 
 const getMenuData = async () => {
-  const apiUrl = import.meta.env.VITE_API_URL;
-  const apiPath = import.meta.env.VITE_API_PATH;
   try {
     loading.value = true;
     const res = await axios.get(`${apiUrl}/api/${apiPath}/products/all`);
@@ -145,6 +155,22 @@ const getMenuData = async () => {
 
 const goProductPage = (productId: string) => {
   router.push({ name: "ProductDetail", params: { productId } });
+};
+
+const addToCart = async (productId: string) => {
+  try {
+    status.value.loadingItem = productId;
+    const res = await axios.post(`${apiUrl}/api/${apiPath}/cart`, {
+      data: { product_id: productId, qty: 1 },
+    });
+
+    if (res.data.success) {
+      status.value.loadingItem = "";
+      toast?.showCartMsg("已成功加入購物車！", "add");
+    }
+  } catch (err) {
+    console.error("加入購物車失敗:", err);
+  }
 };
 </script>
 

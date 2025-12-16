@@ -2,6 +2,7 @@
   <div
     class="card group relative h-[600px] bg-white overflow-hidden shadow-[0_6px_0_0_#E8DBC8] transition-all duration-300 hover:shadow-[0_10px_0_0_#E8DBC8] rounded-[2rem] border-4 border-[#4A3D2F] hover:-translate-y-1 cursor-pointer"
     :style="{ maxWidth: `${cardWidth}px` }"
+    @click="viewDetail"
   >
     <!-- 熱門標籤 -->
     <div
@@ -43,7 +44,16 @@
             >$NT {{ card.origin_price }} / 杯</span
           >
         </div>
-        <button class="btn-primary px-4 py-2 text-sm">+ 加入</button>
+        <div :class="{ 'cursor-not-allowed': disabled }">
+          <button
+            @click.stop="addToCart"
+            :class="buttonClass"
+            :disabled="disabled"
+          >
+            <span v-if="disabled" class="loading loading-spinner"></span>
+            + 加入購物車
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -56,9 +66,30 @@ import { StarIcon } from "@heroicons/vue/24/solid";
 const props = defineProps<{
   card: any;
   width?: number;
+  disabled?: boolean;
+}>();
+
+const emit = defineEmits<{
+  (e: "add-to-cart", id: string): void;
+  (e: "view-detail", id: string): void;
 }>();
 
 const cardWidth = computed(() => props.width || 420);
+
+const buttonClass = computed(() =>
+  props.disabled
+    ? "btn-disabled px-4 py-2 text-sm"
+    : "btn-primary px-4 py-2 text-sm"
+);
+
+const viewDetail = () => {
+  emit("view-detail", props.card.id);
+};
+
+const addToCart = () => {
+  if (props.disabled) return;
+  emit("add-to-cart", props.card.id);
+};
 </script>
 
 <style scoped></style>
