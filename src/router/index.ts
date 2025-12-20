@@ -26,11 +26,6 @@ const routes = [
         name: "ProductDetail",
         component: () => import("../pages/client/ProductDetail.vue"),
       },
-      {
-        path: "cart",
-        name: "Cart",
-        component: () => import("../pages/client/UserCart.vue"),
-      },
     ],
   },
   // 後台登入

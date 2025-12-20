@@ -114,6 +114,9 @@ import { ref, onMounted, computed, watch, inject } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import type { Product } from "../../types/product";
 import axios from "axios";
+import { useCartStore } from "../../stores/cart";
+
+const cartStore = useCartStore();
 
 const route = useRoute();
 const router = useRouter();
@@ -155,8 +158,6 @@ const getProduct = async () => {
     if (!res.data.success) {
       throw new Error("取得單一商品失敗");
     }
-
-    console.log("單一商品資料:", res.data.product);
     product.value = res.data.product;
 
     getSimilarProducts();
@@ -214,6 +215,7 @@ const addToCart = async (productId: string) => {
     if (res.data.success) {
       status.value.loadingItem = "";
       toast?.showCartMsg("已成功加入購物車！", "add");
+      cartStore.getCart();
     }
   } catch (err) {
     console.error("加入購物車失敗:", err);
@@ -231,6 +233,7 @@ const addItemToCart = async (productId: string) => {
     if (res.data.success) {
       status.value.loadingItem = "";
       toast?.showCartMsg("已成功加入購物車！", "add");
+      cartStore.getCart();
     }
   } catch (err) {
     console.error("加入購物車失敗:", err);

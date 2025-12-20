@@ -12,6 +12,20 @@
   /* 自訂文字顏色 */
   --color-card-title: #4a3d2f;
   --color-card-description: #8b7a68;
+
+  /* 購物車跳動動畫 */
+  --animate-cart-bounce: cart-bounce 1s ease-in-out infinite;
+  @keyframes cart-bounce {
+    0%,
+    100% {
+      transform: translateY(-10%);
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    50% {
+      transform: none;
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+  }
 }
 
 @layer components {

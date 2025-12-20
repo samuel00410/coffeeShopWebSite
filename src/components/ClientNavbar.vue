@@ -74,20 +74,53 @@
             <li><router-link to="/about">關於我們</router-link></li>
           </ul>
         </div>
-        <router-link to="/cart" class="btn btn-ghost">
+        <button
+          @click="cartStore.toggleCart"
+          class="relative hidden lg:block btn btn-ghost hover:bg-amber-600"
+        >
           <ShoppingCartIcon class="h-6 w-6" />
-        </router-link>
+          <div
+            v-if="!cartStore.isEmpty"
+            class="absolute -top-2 -right-1 min-w-[26px] h-[26px] flex items-center justify-center text-sm font-black shadow-[0_3px_0_0_#C4A68A] bg-[#FFD4B0] px-2 text-[#4A3D2F] border-3 border-[#4A3D2F] rounded-full animate-cart-bounce"
+          >
+            {{ cartStore.cartCount }}
+          </div>
+        </button>
       </div>
     </nav>
   </header>
+
+  <!-- 平板 和 手機板 購物車顯示 -->
+  <button
+    @click="cartStore.toggleCart"
+    class="group fixed bottom-8 right-8 z-50 lg:hidden border-2 border-[#4A3D2F] bg-[#f7b27a] rounded-full p-4 shadow-lg hover:opacity-75 cursor-pointer transition-all duration-300"
+  >
+    <ShoppingCartIcon2
+      class="h-6 w-6 text-[#4A3D2F] group-hover:text-white transition-all duration-300"
+    />
+    <div
+      v-if="!cartStore.isEmpty"
+      class="absolute -top-2 -right-1 min-w-[26px] h-[26px] flex items-center justify-center text-sm font-black shadow-[0_3px_0_0_#C4A68A] bg-[#FFD4B0] px-2 text-[#4A3D2F] border-3 border-[#4A3D2F] rounded-full animate-cart-bounce"
+    >
+      {{ cartStore.cartCount }}
+    </div>
+  </button>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { ShoppingCartIcon } from "@heroicons/vue/24/outline";
+import { ShoppingCartIcon as ShoppingCartIcon2 } from "@heroicons/vue/24/solid";
 import logoImg from "../assets/images/hero/s0126_27_0.png";
 import { useRouter } from "vue-router";
+import { useCartStore } from "../stores/cart";
+
+const cartStore = useCartStore();
 const router = useRouter();
+
+onMounted(() => {
+  cartStore.getCart();
+});
 
 const backToHome = () => {
   router.push("/");

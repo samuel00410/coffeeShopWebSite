@@ -91,6 +91,9 @@ import {
 import FeaturedCard from "../../components/client/FeaturedCard.vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
+import { useCartStore } from "../../stores/cart";
+
+const cartStore = useCartStore();
 
 const categories = [
   { name: "全部", value: "全部" },
@@ -167,6 +170,7 @@ const addToCart = async (productId: string) => {
     if (res.data.success) {
       status.value.loadingItem = "";
       toast?.showCartMsg("已成功加入購物車！", "add");
+      cartStore.getCart();
     }
   } catch (err) {
     console.error("加入購物車失敗:", err);
