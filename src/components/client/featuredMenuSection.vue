@@ -44,7 +44,9 @@
           v-for="(item, index) in isCardVisible ? cardData : []"
           :key="item.id"
           :card="item"
+          :width="400"
           :style="{ transitionDelay: `${index * 0.25}s` }"
+          @view-detail="goProductPage"
         />
       </TransitionGroup>
 
@@ -73,35 +75,15 @@ import feProduct2 from "../../assets/images/featuredMenu/feProduct2.jpg";
 import feProduct3 from "../../assets/images/featuredMenu/feProduct3.jpg";
 import FeaturedCard from "./FeaturedCard.vue";
 import { useRouter } from "vue-router";
+import axios from "axios";
 
-const itmes = [
-  {
-    id: 1,
-    imageUrl: feProduct1,
-    title: "世界冠軍拿鐵",
-    description: "推薦給不喜歡咖啡苦味的你 (有附捲心酥哦 ! )",
-    origin_price: 120,
-  },
-  {
-    id: 2,
-    imageUrl: feProduct2,
-    title: "麻糬厚奶茶",
-    description: "香濃厚奶茶搭配Q彈麻糬，甜而不膩的絕妙組合！",
-    origin_price: 100,
-  },
-  {
-    id: 3,
-    imageUrl: feProduct3,
-    title: "抹茶紅豆冰沙",
-    description: "清涼抹茶冰沙融合甜蜜紅豆，夏日消暑首選！",
-    origin_price: 130,
-  },
-];
+const apiUrl = import.meta.env.VITE_API_URL;
+const apiPath = import.meta.env.VITE_API_PATH;
 
 const router = useRouter();
 
 onMounted(() => {
-  cardData.value = itmes;
+  getFeaturedProducts();
 });
 
 const cardData: any = ref([]);
@@ -113,13 +95,27 @@ const isCardVisible = useElementVisibility(sectionRef);
 const isTextVisible = useElementVisibility(textRef);
 const isBtnVisible = useElementVisibility(btnRef);
 
-watch(isCardVisible, (newVal) => {
-  if (newVal) {
-    cardData.value = [...itmes];
-  } else {
-    cardData.value = [];
+const getFeaturedProducts = async () => {
+  try {
+    const res = await axios.get(`${apiUrl}/api/${apiPath}/products/all`);
+    if (res.data.success) {
+      const allProducts = res.data.products;
+      // 從所有產品中隨機選擇三個
+      cardData.value = getRandomProducts(allProducts, 3);
+    }
+  } catch (error) {
+    console.error("取得特選商品失敗", error);
   }
-});
+};
+
+const getRandomProducts = (products: any[], count: number) => {
+  const shuffled = [...products].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, count);
+};
+
+const goProductPage = (productId: string) => {
+  router.push({ name: "ProductDetail", params: { productId } });
+};
 </script>
 
 <style scoped>

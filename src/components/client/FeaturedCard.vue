@@ -19,7 +19,7 @@
     <!-- 圖片 -->
     <figure class="overflow-hidden">
       <img
-        class="w-[380px] h-[400px] object-cover group-hover:scale-110 transition-transform duration-500"
+        class="w-[400px] h-[400px] object-cover group-hover:scale-110 transition-transform duration-500"
         :src="card.imageUrl"
         alt="特選產品"
       />
