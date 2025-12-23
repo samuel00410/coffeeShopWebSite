@@ -1,7 +1,7 @@
 <template>
   <dialog ref="modalEl" class="modal">
     <div class="modal-box max-w-5xl">
-      <h3 class="font-bold text-lg mb-4">
+      <h3 class="font-bold mb-4">
         {{ isEdit ? "編輯產品" : "新增產品" }}
       </h3>
 
@@ -131,6 +131,7 @@
 
           <div class="form-control mt-4">
             <label class="label cursor-pointer justify-start gap-3">
+              <span class="label-text">啟用產品</span>
               <input
                 v-model="formData.is_enabled"
                 type="checkbox"
@@ -138,7 +139,6 @@
                 :true-value="1"
                 :false-value="0"
               />
-              <span class="label-text">啟用產品</span>
             </label>
           </div>
         </div>

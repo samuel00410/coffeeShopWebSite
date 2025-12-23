@@ -51,7 +51,14 @@
           </router-link>
         </li>
         <li>
-          <router-link to="#" class="font-medium"> 訂單管理 </router-link>
+          <router-link to="/admin/orders" class="font-medium">
+            訂單管理
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/admin/coupons" class="font-medium">
+            優惠券
+          </router-link>
         </li>
       </ul>
     </div>
