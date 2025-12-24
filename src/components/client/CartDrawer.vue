@@ -31,11 +31,9 @@
 
         <button
           class="ml-auto p-3 bg-[#FFF5E8] rounded-full hover:bg-[#FFE5D1] transition-all hover:scale-110 active:scale-95 border-2 border-[#4A3D2F] cursor-pointer"
+          @click="cartStore.toggleCart"
         >
-          <XMarkIcon
-            @click="cartStore.toggleCart"
-            class="w-4 h-4 text-[#4A3D2F]"
-          />
+          <XMarkIcon class="w-4 h-4 text-[#4A3D2F]" />
         </button>
       </div>
     </div>
@@ -119,7 +117,7 @@
         <!-- 優惠券輸入無效提示文字 -->
         <p
           v-if="couponErrMsg"
-          class="text-[#FF6B6B] font-bold animate-in fade-in slide-in-from-top-1 duration-200"
+          class="text-[#FF6B6B] font-bold animate-text-fade-in"
         >
           {{ couponErrMsg }}
         </p>
@@ -128,7 +126,7 @@
       <!-- 優惠券成功時顯示 -->
       <div
         v-if="cartStore.hasCoupon"
-        class="bg-linear-to-r from-[#E8F5E8] to-[#F0FAF0] rounded-xl p-3 border-2 border-[#A8D4A8] border-opacity-30 animate-in fade-in slide-in-from-top-2 duration-300"
+        class="bg-linear-to-r from-[#E8F5E8] to-[#F0FAF0] rounded-xl p-3 border-2 border-[#A8D4A8] animate-text-fade-in"
       >
         <div class="flex items-center justify-between">
           <div class="flex-1">
@@ -139,7 +137,7 @@
           </div>
           <button
             @click="handleRemoveCoupon"
-            class="w-7 h-7 rounded-full bg-white hover:bg-[#FFE0E0] flex items-center justify-center transition-all hover:scale-110 active:scale-95 border-2 border-[#4A3D2F] border-opacity-10"
+            class="w-7 h-7 rounded-full bg-white hover:bg-[#FFE0E0] flex items-center justify-center transition-all hover:scale-110 active:scale-95 border-2 border-[#4A3D2F]"
             title="移除優惠券"
           >
             <XMarkIcon class="w-4 h-4 text-[#4A3D2F]" />
@@ -150,7 +148,7 @@
       <!-- 折扣顯示 -->
       <div
         v-if="cartStore.hasCoupon"
-        className="flex items-center justify-between animate-in fade-in slide-in-from-top-2 duration-300"
+        className="flex items-center justify-between animate-text-fade-in"
       >
         <span className="text-[#6B9B6B] font-bold">折扣</span>
         <span className="text-[#4A8A4A] font-black"
