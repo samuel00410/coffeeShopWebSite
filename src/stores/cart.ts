@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import axios from "axios";
+import api from "../utils/api";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 const apiPath = import.meta.env.VITE_API_PATH;
@@ -14,6 +15,7 @@ export const useCartStore = defineStore("cart", () => {
   const cartData = ref([]);
   const finalTotal = ref(0);
   const total = ref(0);
+  const appliedCoupon = ref(null); // 儲存已套用的優惠券
 
   // Getters
   const cartCount = computed(() => {
@@ -22,6 +24,15 @@ export const useCartStore = defineStore("cart", () => {
 
   const isEmpty = computed(() => {
     return cartData.value.length === 0;
+  });
+
+  const hasCoupon = computed(() => {
+    return appliedCoupon.value !== null;
+  });
+
+  // 原價 - 最終價格(折後價格) = 折扣金額
+  const discount = computed(() => {
+    return total.value - finalTotal.value;
   });
 
   //   Actions
@@ -49,6 +60,12 @@ export const useCartStore = defineStore("cart", () => {
         cartData.value = res.data.data.carts;
         finalTotal.value = res.data.data.final_total;
         total.value = res.data.data.total;
+
+        if (res.data.data.carts[0].coupon) {
+          appliedCoupon.value = res.data.data.carts[0].coupon.code;
+        } else {
+          appliedCoupon.value = null;
+        }
       }
     } catch (err) {
       console.error("取得購物車資料失敗:", err);
@@ -58,19 +75,15 @@ export const useCartStore = defineStore("cart", () => {
   // 更新購物車
   const updateCart = async (payload: { productId: string; qty: number }) => {
     status.value.loadingItem = payload.productId;
-
     try {
       const cart = {
         product_id: payload.productId,
         qty: payload.qty,
       };
 
-      const res = await axios.put(
-        `${apiUrl}/api/${apiPath}/cart/${payload.productId}`,
-        {
-          data: cart,
-        }
-      );
+      const res = await api.put(`/api/${apiPath}/cart/${payload.productId}`, {
+        data: cart,
+      });
 
       if (res.data.success) {
         await getCart();
@@ -106,6 +119,8 @@ export const useCartStore = defineStore("cart", () => {
 
       if (res.data.success) {
         await getCart();
+
+        appliedCoupon.value = null;
       }
     } catch (err) {
       console.error("清空購物車失敗:", err);
@@ -119,9 +134,12 @@ export const useCartStore = defineStore("cart", () => {
     cartData,
     finalTotal,
     total,
+    appliedCoupon,
     // Getters
     cartCount,
     isEmpty,
+    hasCoupon,
+    discount,
     // Actions
     openCart,
     closeCart,
