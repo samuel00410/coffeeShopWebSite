@@ -29,9 +29,17 @@
       <div class="navbar-center hidden lg:flex">
         <ul class="menu menu-horizontal flex items-center gap-2 px-1">
           <li>
-            <router-link class="nav-link font-black text-lg" to="/"
-              >首頁</router-link
+            <router-link
+              to="/"
+              active-class=""
+              exact-active-class=""
+              class="nav-link font-black text-lg"
+              :class="{
+                'router-link-exact-active': route.path === '/' && !route.hash,
+              }"
             >
+              首頁
+            </router-link>
           </li>
           <li>
             <router-link class="nav-link font-black text-lg" to="/menu"
@@ -39,9 +47,15 @@
             >
           </li>
           <li>
-            <router-link class="nav-link font-black text-lg" to="/about"
-              >關於我們</router-link
+            <router-link
+              to="/#about"
+              active-class=""
+              exact-active-class=""
+              class="nav-link font-black text-lg"
+              :class="{ 'router-link-exact-active': route.hash === '#about' }"
             >
+              關於我們
+            </router-link>
           </li>
         </ul>
       </div>
@@ -69,12 +83,37 @@
             tabindex="-1"
             class="menu menu-sm flex-col gap-3 dropdown-content bg-[#FFFBF5] rounded-box z-1 mt-3 w-52 p-2 shadow"
           >
-            <li><router-link to="/">首頁</router-link></li>
-            <li><router-link to="/menu">菜單</router-link></li>
-            <li><router-link to="/about">關於我們</router-link></li>
+            <li>
+              <router-link
+                to="/"
+                active-class=""
+                exact-active-class=""
+                :class="{
+                  'router-link-exact-active': route.path === '/' && !route.hash,
+                }"
+                @click="closeDropdown"
+              >
+                首頁
+              </router-link>
+            </li>
+            <li>
+              <router-link to="/menu" @click="closeDropdown">菜單</router-link>
+            </li>
+            <li>
+              <router-link
+                to="/#about"
+                active-class=""
+                exact-active-class=""
+                :class="{ 'router-link-exact-active': route.hash === '#about' }"
+                @click="closeDropdown"
+              >
+                關於我們
+              </router-link>
+            </li>
           </ul>
         </div>
         <button
+          v-if="showCart"
           @click="cartStore.toggleCart"
           class="relative hidden lg:block btn btn-ghost hover:bg-amber-600"
         >
@@ -92,6 +131,7 @@
 
   <!-- 平板 和 手機板 購物車顯示 -->
   <button
+    v-if="showCart"
     @click="cartStore.toggleCart"
     class="group fixed bottom-8 right-8 z-50 lg:hidden border-2 border-[#4A3D2F] bg-[#f7b27a] rounded-full p-4 shadow-lg hover:opacity-75 cursor-pointer transition-all duration-300"
   >
@@ -108,22 +148,32 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import { ShoppingCartIcon } from "@heroicons/vue/24/outline";
 import { ShoppingCartIcon as ShoppingCartIcon2 } from "@heroicons/vue/24/solid";
 import logoImg from "../assets/images/hero/s0126_27_0.png";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { useCartStore } from "../stores/cart";
 
 const cartStore = useCartStore();
+const route = useRoute();
 const router = useRouter();
 
 onMounted(() => {
   cartStore.getCart();
 });
 
+// 判斷是否在結帳頁面，若是則不顯示購物車按鈕
+const showCart = computed(() => {
+  return route.name !== "Checkout";
+});
+
 const backToHome = () => {
   router.push("/");
+};
+
+const closeDropdown = () => {
+  (document.activeElement as HTMLElement)?.blur();
 };
 </script>
 

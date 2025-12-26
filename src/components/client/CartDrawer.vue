@@ -170,6 +170,7 @@
 
       <button
         class="w-full px-8 py-4 bg-[#FFD4B0] text-[#4A3D2F] rounded-full font-black text-base shadow-[0_4px_0_0_#C4A68A] hover:shadow-[0_6px_0_0_#C4A68A] transition-all hover:scale-105 active:scale-95 border-3 border-[#4A3D2F] flex items-center justify-center gap-2 cursor-pointer"
+        @click="goCheckOut"
       >
         前往結帳
       </button>
@@ -267,5 +268,10 @@ const handleRemoveCoupon = async () => {
 const goToMenu = () => {
   cartStore.toggleCart();
   rounter.push({ name: "Menu" });
+};
+
+const goCheckOut = () => {
+  cartStore.toggleCart();
+  rounter.push({ name: "Checkout" });
 };
 </script>

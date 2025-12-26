@@ -17,14 +17,14 @@ const routes = [
         component: () => import("../pages/client/Menu.vue"),
       },
       {
-        path: "about",
-        name: "About",
-        component: () => import("../pages/client/About.vue"),
-      },
-      {
         path: "product/:productId",
         name: "ProductDetail",
         component: () => import("../pages/client/ProductDetail.vue"),
+      },
+      {
+        path: "checkout",
+        name: "Checkout",
+        component: () => import("../pages/client/Checkout.vue"),
       },
     ],
   },
@@ -68,6 +68,12 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes,
   scrollBehavior(to, from, savedPosition) {
+    if (to.hash) {
+      return {
+        el: to.hash,
+        behavior: "smooth",
+      };
+    }
     return { top: 0 };
   },
 });

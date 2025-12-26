@@ -1,7 +1,7 @@
 <template>
   <HeroSection />
   <PromotionSection />
-  <AboutSection />
+  <AboutSection id="about" />
   <FeaturedMenuSection />
 </template>
 
