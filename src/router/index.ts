@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from "vue-router";
+import { useCartStore } from "../stores/cart";
 
 const routes = [
   // ==== 前台 =====
@@ -76,6 +77,20 @@ const router = createRouter({
     }
     return { top: 0 };
   },
+});
+
+// 導航守衛 : 檢查購物車是否為空
+router.beforeEach((to, from, next) => {
+  // 前往結帳頁面時檢查購物車
+  if (to.name === "Checkout") {
+    const cartStore = useCartStore();
+
+    if (cartStore.isEmpty) {
+      next({ name: "Home", query: { showEmptyCartMsg: "true" } }); // 購物車為空，導向首頁
+      return;
+    }
+  }
+  next();
 });
 
 export default router;
