@@ -2,12 +2,12 @@
   <div v-if="visible" class="toast toast-top toast-end z-50">
     <div
       :class="[
-        'border-[3px] rounded-[1.5rem] px-5 py-4 flex items-center gap-4 min-w-[280px] max-w-[420px]',
+        'border-[3px] rounded-[1.5rem] px-5 py-4 flex items-center gap-2 min-w-[280px] max-w-[420px]',
         toastClass,
       ]"
     >
       <div>
-        <img class="w-10 h-10" :src="addCartImgPath" alt="Toast Image" />
+        <img class="w-12 h-12" :src="addCartImgPath" alt="Toast Image" />
       </div>
 
       <!-- 內容 -->
@@ -24,27 +24,38 @@
 </template>
 
 <script setup lang="ts">
-import addCartImg from "../../assets/images/Toast/addCartImg.png";
-import removeCartImg from "../../assets/images/Toast/removeCartImg.png";
+import type { ToastType } from "../../types/clientToast";
+import successImg from "../../assets/images/Toast/successImg.svg";
+import errorImg from "../../assets/images/Toast/errorImg.svg";
+import infoImg from "../../assets/images/Toast/infoImg.svg";
 
 import { ref, computed } from "vue";
 
-type ToastType = "add" | "remove";
-
 const visible = ref(false);
 const message = ref("");
-const toastType = ref<ToastType>("add");
+const toastType = ref<ToastType>("success");
 
 const addCartImgPath = computed(() => {
-  return toastType.value === "add" ? addCartImg : removeCartImg;
+  switch (toastType.value) {
+    case "success":
+      return successImg;
+    case "error":
+      return errorImg;
+    case "info":
+      return infoImg;
+    default:
+      return infoImg;
+  }
 });
 
 const toastClass = computed(() => {
   switch (toastType.value) {
-    case "add":
+    case "success":
       return "bg-linear-to-r from-[#FFF4F0] to-[#FFE8DD] border-[#FFD8C8] shadow-[0_4px_0_0_#FFD8C8]";
-    case "remove":
+    case "error":
       return "bg-linear-to-r from-[#FFF5E8] to-[#F5EDE3] border-[#E8DBC8] shadow-[0_4px_0_0_#E8DBC8]";
+    case "info":
+      return "bg-linear-to-r from-white to-[#FFFEF9] border-[#E8DBC8] shadow-[0_4px_0_0_#E8DBC8]";
     default:
       return "bg-linear-to-r from-white to-[#FFFEF9] border-[#E8DBC8] shadow-[0_4px_0_0_#E8DBC8]";
   }

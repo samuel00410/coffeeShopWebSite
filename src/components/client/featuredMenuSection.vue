@@ -47,6 +47,8 @@
           :width="400"
           :style="{ transitionDelay: `${index * 0.25}s` }"
           @view-detail="goProductPage"
+          @add-to-cart="addToCart"
+          :disabled="status.loadingItem === item.id"
         />
       </TransitionGroup>
 
@@ -66,7 +68,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from "vue";
+import type { ToastType } from "../../types/clientToast";
+import { useCartStore } from "../../stores/cart";
+import { ref, onMounted, watch, inject } from "vue";
 import { useElementVisibility } from "@vueuse/core";
 import { SparklesIcon } from "@heroicons/vue/24/solid";
 import titleImg from "../../assets/images/featuredMenu/s0134_31_1.png";
@@ -80,6 +84,12 @@ import axios from "axios";
 const apiUrl = import.meta.env.VITE_API_URL;
 const apiPath = import.meta.env.VITE_API_PATH;
 
+const toast = inject<{
+  showCartMsg(msg: string, type: ToastType): void;
+}>("toast");
+
+const cartStore = useCartStore();
+
 const router = useRouter();
 
 onMounted(() => {
@@ -88,6 +98,9 @@ onMounted(() => {
 
 const cardData: any = ref([]);
 
+const status = ref({
+  loadingItem: "",
+});
 const sectionRef = ref<HTMLElement | null>(null);
 const textRef = ref<HTMLElement | null>(null);
 const btnRef = ref<HTMLElement | null>(null);
@@ -111,6 +124,23 @@ const getFeaturedProducts = async () => {
 const getRandomProducts = (products: any[], count: number) => {
   const shuffled = [...products].sort(() => 0.5 - Math.random());
   return shuffled.slice(0, count);
+};
+
+const addToCart = async (productId: string) => {
+  try {
+    status.value.loadingItem = productId;
+    const res = await axios.post(`${apiUrl}/api/${apiPath}/cart`, {
+      data: { product_id: productId, qty: 1 },
+    });
+
+    if (res.data.success) {
+      status.value.loadingItem = "";
+      toast?.showCartMsg("已成功加入購物車！", "success");
+      cartStore.getCart();
+    }
+  } catch (err) {
+    console.error("加入購物車失敗:", err);
+  }
 };
 
 const goProductPage = (productId: string) => {

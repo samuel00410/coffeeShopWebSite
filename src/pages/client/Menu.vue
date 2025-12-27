@@ -81,6 +81,7 @@
 </template>
 
 <script setup lang="ts">
+import type { ToastType } from "../../types/clientToast";
 import { ref, computed, onMounted, inject } from "vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
@@ -110,7 +111,7 @@ onMounted(() => {
 });
 
 const toast = inject<{
-  showCartMsg(msg: string, type: "add" | "remove"): void;
+  showCartMsg(msg: string, type: ToastType): void;
 }>("toast");
 
 const router = useRouter();
@@ -169,7 +170,7 @@ const addToCart = async (productId: string) => {
 
     if (res.data.success) {
       status.value.loadingItem = "";
-      toast?.showCartMsg("已成功加入購物車！", "add");
+      toast?.showCartMsg("已成功加入購物車！", "success");
       cartStore.getCart();
     }
   } catch (err) {

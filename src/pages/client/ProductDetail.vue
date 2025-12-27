@@ -107,12 +107,13 @@
 </template>
 
 <script setup lang="ts">
+import type { ToastType } from "../../types/clientToast";
+import type { Product } from "../../types/product";
 import ClientLoading from "../../components/client/ClientLoading.vue";
 import FeaturedCard from "../../components/client/FeaturedCard.vue";
 import { ArrowLeftIcon } from "@heroicons/vue/24/outline";
 import { ref, onMounted, computed, watch, inject } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import type { Product } from "../../types/product";
 import axios from "axios";
 import { useCartStore } from "../../stores/cart";
 
@@ -129,7 +130,7 @@ onMounted(() => {
 });
 
 const toast = inject<{
-  showCartMsg(msg: string, type: "add" | "remove"): void;
+  showCartMsg(msg: string, type: ToastType): void;
 }>("toast");
 
 const loading = ref(false);
@@ -214,7 +215,7 @@ const addToCart = async (productId: string) => {
 
     if (res.data.success) {
       status.value.loadingItem = "";
-      toast?.showCartMsg("已成功加入購物車！", "add");
+      toast?.showCartMsg("已成功加入購物車！", "success");
       cartStore.getCart();
     }
   } catch (err) {
@@ -232,7 +233,7 @@ const addItemToCart = async (productId: string) => {
 
     if (res.data.success) {
       status.value.loadingItem = "";
-      toast?.showCartMsg("已成功加入購物車！", "add");
+      toast?.showCartMsg("已成功加入購物車！", "success");
       cartStore.getCart();
     }
   } catch (err) {
