@@ -66,6 +66,17 @@
     @apply flex items-center justify-center w-12 h-12 bg-white border-2 border-black rounded-full cursor-pointer hover:bg-[#FFF0E8] hover:scale-105 transition-all duration-300;
   }
 
+  /* 結帳頁面相關樣式 */
+  .checkout-form-label {
+    @apply text-[#6B5444] mb-3 block;
+  }
+
+  .checkout-form-input {
+    @apply w-full px-5 py-2 bg-[#FFFBF5] border-2 border-[#FFE5D1] rounded-2xl
+      text-[#4A3D2F] placeholder:text-[#A68F7C]
+      focus:outline-none focus:border-[#FFD4B0] focus:bg-white transition-all;
+  }
+
   /* 重設標題樣式 */
   h1 {
     @apply text-4xl font-bold;

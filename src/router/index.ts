@@ -80,10 +80,12 @@ const router = createRouter({
 });
 
 // 導航守衛 : 檢查購物車是否為空
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   // 前往結帳頁面時檢查購物車
   if (to.name === "Checkout") {
     const cartStore = useCartStore();
+
+    await cartStore.getCart();
 
     if (cartStore.isEmpty) {
       next({ name: "Home", query: { showEmptyCartMsg: "true" } }); // 購物車為空，導向首頁
