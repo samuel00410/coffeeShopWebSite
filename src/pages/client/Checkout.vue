@@ -34,7 +34,7 @@
               : 'bg-white text-[#8B7A68] border-[#FFE5D1]',
           ]"
         >
-          2. 確認訂單
+          2. 確認及付款
         </div>
         <div class="text-[#D4B5A0]">→</div>
         <div
@@ -473,7 +473,6 @@ const computedPaymentMethod = computed(() => {
 
 const submitOrder = handleSubmit((values) => {
   // Step 1 -> Step 2 : 驗證通過，進入確認訂單頁面
-  console.log("驗證通過！訂單資料:", values);
   currentStep.value = 2;
 });
 
@@ -496,31 +495,51 @@ const createOrder = async () => {
         tel: values.phone,
         address: "僅限內用及外帶",
       },
-      message: values.orderNotes,
+      message: values.orderNotes || "",
     },
   };
   try {
-    const res = await api.post(
+    // 創建訂單
+    const orderRes = await api.post(
       `/api/${import.meta.env.VITE_API_PATH}/order`,
       formData
     );
 
-    if (res.data.success) {
-      // 储存订单结果
-      orderResult.value = {
-        orderId: res.data.orderId,
-        createAt: res.data.create_at,
-        total: res.data.total,
-      };
+    if (orderRes.data.success) {
+      const orderId = orderRes.data.orderId;
 
-      toast?.showCartMsg("訂單提交成功！", "success");
+      const payRes = await api.post(
+        `/api/${import.meta.env.VITE_API_PATH}/pay/${orderId}`
+      );
 
-      await cartStore.getCart();
+      if (payRes.data.success) {
+        // 储存订单结果
+        orderResult.value = {
+          orderId: orderId,
+          createAt: orderRes.data.create_at,
+          total: orderRes.data.total,
+        };
 
-      currentStep.value = 3;
+        toast?.showCartMsg("訂單建立成功並已完成付款！", "success");
+
+        await cartStore.getCart();
+
+        currentStep.value = 3;
+      } else {
+        // 付款失败（但订单已创建）
+        toast?.showCartMsg(
+          `訂單已建立，但付款失敗。訂單編號：${orderId}`,
+          "error"
+        );
+        console.error("付款失败:", payRes.data);
+      }
     }
-  } catch (err) {
+  } catch (err: any) {
     console.error("訂單提交失敗:", err);
+
+    // 显示具体错误信息
+    const errorMsg = err.response?.data?.message || "訂單提交失敗，請稍後再試";
+    toast?.showCartMsg(errorMsg, "error");
   }
 };
 
