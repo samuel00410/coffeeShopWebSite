@@ -2,67 +2,58 @@
   <section ref="sectionRef" class="featured-menu-section bg-hero-bottom">
     <div class="container mx-auto py-12 text-center">
       <!-- 文字區塊 -->
-      <div ref="textRef">
-        <Transition name="text-fade">
-          <div
-            v-if="isTextVisible"
-            class="mb-16 flex-col items-center justify-center"
-          >
-            <div
-              class="mb-10 inline-flex items-center gap-2 bg-white shadow-[0_6px_0_0_#E8DBC8] border-4 border-[#4A3D2F] rounded-full px-[16px] py-[8px] -rotate-2"
-            >
-              <div class="w-10 h-10">
-                <img :src="titleImg" class="w-full h-auto rotate-y-180" />
-              </div>
-              <p class="text-lg font-black text-[#4A3D2F]">推薦菜單</p>
-              <div class="w-10 h-10">
-                <img :src="titleImg" class="w-full h-auto" />
-              </div>
-            </div>
-
-            <div class="flex items-start justify-center gap-2">
-              <h2 class="mb-6 rotate-1 text-4xl font-black text-black">
-                本週特選
-              </h2>
-              <SparklesIcon class="h-12 w-12 text-amber-400" />
-            </div>
-
-            <p className="text-[#6B5444] text-xl font-bold">
-              用心製作的特別菜單請您品嚐
-            </p>
+      <div
+        class="mb-16 flex-col items-center justify-center"
+        :class="{ 'animate-text-in': isVisible }"
+      >
+        <div
+          class="mb-10 inline-flex items-center gap-2 bg-white shadow-[0_6px_0_0_#E8DBC8] border-4 border-[#4A3D2F] rounded-full px-[16px] py-[8px] -rotate-2"
+        >
+          <div class="w-10 h-10">
+            <img :src="titleImg" class="w-full h-auto rotate-y-180" />
           </div>
-        </Transition>
+          <p class="text-lg font-black text-[#4A3D2F]">推薦菜單</p>
+          <div class="w-10 h-10">
+            <img :src="titleImg" class="w-full h-auto" />
+          </div>
+        </div>
+
+        <div class="flex items-start justify-center gap-2">
+          <h2 class="mb-6 rotate-1 text-4xl font-black text-black">本週特選</h2>
+          <SparklesIcon class="h-12 w-12 text-amber-400" />
+        </div>
+
+        <p className="text-[#6B5444] text-xl font-bold">
+          用心製作的特別菜單請您品嚐
+        </p>
       </div>
 
       <!-- 菜單卡片區塊 -->
-      <TransitionGroup
-        name="fade"
-        tag="div"
+      <div
         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12 place-items-center"
       >
         <FeaturedCard
-          v-for="(item, index) in isCardVisible ? cardData : []"
+          v-for="(item, index) in cardData"
           :key="item.id"
           :card="item"
           :width="400"
-          :style="{ transitionDelay: `${index * 0.25}s` }"
+          :class="{ 'animate-card-in': isVisible }"
+          :style="{
+            animationDelay: isVisible ? `${0.5 + index * 0.25}s` : '0s',
+          }"
           @view-detail="goProductPage"
           @add-to-cart="addToCart"
           :disabled="status.loadingItem === item.id"
         />
-      </TransitionGroup>
-
-      <div ref="btnRef">
-        <Transition name="btn-fade">
-          <button
-            v-if="isBtnVisible"
-            class="btn-primary px-6 py-6"
-            @click="$router.push({ name: 'Menu' })"
-          >
-            查看完整菜單 →
-          </button>
-        </Transition>
       </div>
+
+      <button
+        class="btn-primary px-6 py-6"
+        :class="{ 'animate-btn-in': isVisible }"
+        @click="$router.push({ name: 'Menu' })"
+      >
+        查看完整菜單 →
+      </button>
     </div>
   </section>
 </template>
@@ -102,11 +93,7 @@ const status = ref({
   loadingItem: "",
 });
 const sectionRef = ref<HTMLElement | null>(null);
-const textRef = ref<HTMLElement | null>(null);
-const btnRef = ref<HTMLElement | null>(null);
-const isCardVisible = useElementVisibility(sectionRef);
-const isTextVisible = useElementVisibility(textRef);
-const isBtnVisible = useElementVisibility(btnRef);
+const isVisible = useElementVisibility(sectionRef);
 
 const getFeaturedProducts = async () => {
   try {
@@ -149,55 +136,56 @@ const goProductPage = (productId: string) => {
 </script>
 
 <style scoped>
-/*  標題文字動畫 */
-.text-fade-enter-active,
-.text-fade-leave-active {
-  transition: opacity 1.5s ease, transform 1.5s ease;
+/* 文字區塊動畫 */
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
-.text-fade-enter-from,
-.text-fade-leave-to {
+
+/* 卡片動畫 */
+@keyframes fadeInCard {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 按鈕動畫 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-text-in {
+  animation: fadeInLeft 1.5s ease forwards;
+  animation-delay: 0s;
   opacity: 0;
-  transform: translateX(-20px);
-}
-.text-fade-enter-to,
-.text-fade-leave-from {
-  opacity: 1;
-  transform: translateX(0);
 }
 
-/*  卡片動畫 */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 2.5s ease, transform 2.5s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
+.animate-card-in {
+  animation: fadeInCard 2.5s ease forwards;
   opacity: 0;
-  transform: translateX(-20px);
 }
 
-.fade-enter-to,
-.fade-leave-from {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-/*  按鈕動畫 */
-.btn-fade-enter-active,
-.btn-fade-leave-active {
-  transition: opacity 1.5s ease, transform 1.5s ease;
-}
-
-.btn-fade-enter-from,
-.btn-fade-leave-to {
+.animate-btn-in {
+  animation: fadeInUp 1.5s ease forwards;
+  animation-delay: 1s;
   opacity: 0;
-  transform: translateY(20px);
-}
-
-.btn-fade-enter-to,
-.btn-fade-leave-from {
-  opacity: 1;
-  transform: translateY(0);
 }
 </style>

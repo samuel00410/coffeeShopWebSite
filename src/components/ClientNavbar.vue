@@ -28,7 +28,7 @@
       </div>
       <div class="navbar-center hidden lg:flex">
         <ul class="menu menu-horizontal flex items-center gap-2 px-1">
-          <li>
+          <!-- <li>
             <router-link
               to="/"
               active-class=""
@@ -40,12 +40,7 @@
             >
               首頁
             </router-link>
-          </li>
-          <li>
-            <router-link class="nav-link font-black text-lg" to="/menu"
-              >菜單</router-link
-            >
-          </li>
+          </li> -->
           <li>
             <router-link
               to="/#about"
@@ -56,6 +51,18 @@
             >
               關於我們
             </router-link>
+          </li>
+          <li>
+            <router-link class="nav-link font-black text-lg" to="/menu"
+              >菜單</router-link
+            >
+          </li>
+          <li>
+            <router-link
+              :to="{ name: 'Login' }"
+              class="nav-link font-black text-lg"
+              >商品管理</router-link
+            >
           </li>
         </ul>
       </div>
@@ -83,7 +90,7 @@
             tabindex="-1"
             class="menu menu-sm flex-col gap-3 dropdown-content bg-[#FFFBF5] rounded-box z-1 mt-3 w-52 p-2 shadow"
           >
-            <li>
+            <!-- <li>
               <router-link
                 to="/"
                 active-class=""
@@ -95,10 +102,7 @@
               >
                 首頁
               </router-link>
-            </li>
-            <li>
-              <router-link to="/menu" @click="closeDropdown">菜單</router-link>
-            </li>
+            </li> -->
             <li>
               <router-link
                 to="/#about"
@@ -109,6 +113,14 @@
               >
                 關於我們
               </router-link>
+            </li>
+            <li>
+              <router-link to="/menu" @click="closeDropdown">菜單</router-link>
+            </li>
+            <li>
+              <router-link :to="{ name: 'Login' }" @click="closeDropdown"
+                >商品管理</router-link
+              >
             </li>
           </ul>
         </div>

@@ -34,33 +34,6 @@
           {{ cat.name }}
         </button>
       </div>
-      <!-- 排列顯示 -->
-      <div
-        class="p-1.5 flex items-center gap-2 border-2 border-[#F7F2EB] rounded-2xl bg-[#FAF6F1]"
-      >
-        <button
-          class="p-2 rounded-xl transition-all duration-300"
-          :class="[
-            viewMode === 'grid'
-              ? 'bg-linear-to-r from-[#D4B5A0] to-[#E8D5C4] text-white shadow-sm'
-              : 'text-[#8B7E74] hover:bg-white',
-          ]"
-          @click="modeSelect('grid')"
-        >
-          <font-awesome-icon :icon="faTableCells" />
-        </button>
-        <button
-          class="p-2 rounded-xl text-[#8B7E74] hover:bg-white transition-all duration-300"
-          @click="modeSelect('list')"
-          :class="[
-            viewMode === 'list'
-              ? 'bg-linear-to-r from-[#D4B5A0] to-[#E8D5C4] text-white shadow-sm'
-              : 'text-[#8B7E74] hover:bg-white',
-          ]"
-        >
-          <font-awesome-icon :icon="faList" />
-        </button>
-      </div>
     </div>
 
     <!-- menu展示 -->

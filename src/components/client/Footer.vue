@@ -111,7 +111,7 @@
               <li>
                 <div href="#" class="flex gap-2 p-4 footer-description">
                   <PhoneIcon class="w-5 h-5 text-[#FFD4B0]" />
-                  02-1234-5678
+                  (02) 2733-8888
                 </div>
               </li>
               <li>

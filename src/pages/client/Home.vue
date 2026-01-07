@@ -3,6 +3,7 @@
   <PromotionSection />
   <AboutSection id="about" />
   <FeaturedMenuSection />
+  <mapSection />
 </template>
 
 <script setup lang="ts">
@@ -11,6 +12,7 @@ import HeroSection from "../../components/client/HeroSection.vue";
 import PromotionSection from "../../components/client/PromotionSection.vue";
 import FeaturedMenuSection from "../../components/client/featuredMenuSection.vue";
 import AboutSection from "../../components/client/AboutSection.vue";
+import mapSection from "../../components/client/mapSection.vue";
 import { useCartStore } from "../../stores/cart";
 import { inject, onMounted } from "vue";
 import { useRoute } from "vue-router";
