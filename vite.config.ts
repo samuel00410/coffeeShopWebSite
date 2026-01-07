@@ -6,6 +6,6 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   // 設定 base 路徑，請將 'coffeeShopWebsite' 改成你的 GitHub repo 名稱
   // 如果是部署到 username.github.io（主頁），則設為 '/'
-  base: "/coffeeShopWebsite/",
+  base: "/coffeeShopWebSite/",
   plugins: [vue(), tailwindcss()],
 });
