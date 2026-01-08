@@ -1,5 +1,4 @@
 <template>
-  <Loading :active="isLoading" />
   <div class="flex justify-between items-center mb-6">
     <h2 class="text-2xl font-bold">優惠券</h2>
     <button class="btn btn-primary" @click="openModal(true)">
@@ -32,7 +31,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-if="tableData.length === 0">
+        <tr v-if="tableData.length === 0 && !isLoading">
           <td colspan="6" class="text-center">目前沒有優惠券資料</td>
         </tr>
         <tr v-for="coupon in tableData" :key="coupon.id">
@@ -61,21 +60,25 @@
     </table>
   </div>
 
+  <Loading :active="isLoading" />
   <CouponModal
     :coupon="tempCoupon"
     ref="CouponModalRef"
     @refresh="getCoupons"
   />
   <DeleteModal ref="DeleteModalRef" @refresh="getCoupons" />
+  <Pagination :pages="pagination" @pageChanged="updatePage" />
 </template>
 
 <script setup lang="ts">
+import type { Tpagination } from "../../types/product";
 import type { iCoupon } from "../../types/coupon";
 import { ref, onMounted } from "vue";
 import { formatDate } from "../../utils/format";
 import api from "../../utils/api";
 import CouponModal from "../../components/admin/coupon/CouponModal.vue";
 import DeleteModal from "../../components/admin/coupon/DeleteModal.vue";
+import Pagination from "../../components/admin/Pagination.vue";
 
 onMounted(() => {
   getCoupons();
@@ -85,22 +88,28 @@ const CouponModalRef = ref<InstanceType<typeof CouponModal> | null>(null);
 const DeleteModalRef = ref<InstanceType<typeof DeleteModal> | null>(null);
 const tableData = ref<iCoupon[]>([]);
 const tempCoupon = ref<iCoupon | undefined>(undefined);
+const pagination = ref<Tpagination>({});
 const isLoading = ref(false);
 
-const getCoupons = async () => {
+const getCoupons = async (page = 1) => {
   isLoading.value = true;
   try {
     const res = await api.get(
-      `/api/${import.meta.env.VITE_API_PATH}/admin/coupons?page=1`
+      `/api/${import.meta.env.VITE_API_PATH}/admin/coupons?page=${page}`
     );
     if (res.data.success) {
       tableData.value = res.data.coupons;
+      pagination.value = res.data.pagination;
     }
   } catch (err) {
-    "取得優惠券失敗:", err;
+    console.error("取得優惠券失敗:", err);
   } finally {
     isLoading.value = false;
   }
+};
+
+const updatePage = (page: number) => {
+  getCoupons(page);
 };
 
 const openModal = (isNew: boolean, coupon?: iCoupon) => {

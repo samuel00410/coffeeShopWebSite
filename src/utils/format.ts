@@ -17,7 +17,10 @@ export const formatProductList = (products: any) => {
   // 依序顯示產品名稱和產品數量
   if (productArray.length > 0) {
     return productArray
-      .map((item: any) => `${item.product_id} 數量 : ${item.qty} `)
+      .map(
+        (item: any) =>
+          `${item.product.title}   數量 : ${item.qty} ${item.product.unit} `
+      )
       .join("\n");
   }
   return "無商品";

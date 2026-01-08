@@ -27,6 +27,11 @@ const routes = [
         name: "Checkout",
         component: () => import("../pages/client/Checkout.vue"),
       },
+      {
+        path: "/:pathMatch(.*)*",
+        name: "NotFound",
+        component: () => import("../pages/client/notFoundPage.vue"),
+      },
     ],
   },
   // 後台登入
@@ -42,11 +47,6 @@ const routes = [
     meta: { requiresAuth: true }, // 之後用來判斷是否需要登入
     children: [
       {
-        path: "dashboard",
-        name: "Dashboard",
-        component: () => import("../pages/admin/Dashboard.vue"),
-      },
-      {
         path: "products",
         name: "Products",
         component: () => import("../pages/admin/Products.vue"),
@@ -61,7 +61,18 @@ const routes = [
         name: "Coupons",
         component: () => import("../pages/admin/Coupons.vue"),
       },
+      {
+        path: "/:pathMatch(.*)*",
+        name: "AdminNotFound",
+        component: () => import("../pages/admin/notFoundPage.vue"),
+      },
     ],
+  },
+
+  {
+    path: "/:pathMatch(.*)*",
+    name: "GlobalNotFound",
+    component: () => import("../pages/client/notFoundPage.vue"),
   },
 ];
 

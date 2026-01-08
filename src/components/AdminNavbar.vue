@@ -41,11 +41,6 @@
     <div class="navbar-center hidden lg:flex">
       <ul class="menu menu-horizontal px-1">
         <li>
-          <router-link to="/admin/dashboard" class="font-medium">
-            首頁
-          </router-link>
-        </li>
-        <li>
           <router-link to="/admin/products" class="font-medium">
             產品管理
           </router-link>
