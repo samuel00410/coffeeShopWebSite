@@ -45,10 +45,7 @@ api.interceptors.response.use(
   (response: AxiosResponse) => {
     //  打印响应（开发环境）
     if (import.meta.env.DEV) {
-      console.log(
-        `📥 [${response.status}] ${response.config.url}`,
-        response.data
-      );
+      console.log(`[${response.status}] ${response.config.url}`, response.data);
     }
 
     return response;

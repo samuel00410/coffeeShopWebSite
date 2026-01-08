@@ -48,7 +48,6 @@ const modalEl = ref<HTMLDialogElement | null>(null);
 const tempOrder = ref({});
 
 const openDeleteModal = (order: any) => {
-  console.log("DeleteModal 開啟刪除訂單:", order);
   tempOrder.value = order;
   modalEl.value?.showModal();
 };

@@ -223,7 +223,6 @@ const applyCoupon = async () => {
   } catch (err: any) {
     console.error("添加優惠券失敗:", err);
     if (err.response) {
-      console.log(err.response.data.message);
       couponErrMsg.value = err.response.data.message;
     }
   } finally {

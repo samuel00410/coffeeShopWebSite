@@ -153,7 +153,6 @@ const getOrders = async () => {
     if (res.data.success) {
       if (res.data.orders) {
         tableData.value = res.data.orders;
-        console.log("訂單資訊:", res.data);
       } else {
         console.warn("訂單資料不存在，可能沒有訂單紀錄。");
         tableData.value = [];

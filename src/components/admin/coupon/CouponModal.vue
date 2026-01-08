@@ -212,7 +212,6 @@ const updateCoupon = async () => {
 watch(
   () => props.coupon,
   (newCoupon) => {
-    console.log("props.coupon changed:", newCoupon);
     if (newCoupon) {
       formData.value = {
         title: newCoupon.title ?? "",

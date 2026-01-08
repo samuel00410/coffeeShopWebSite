@@ -78,7 +78,6 @@ const getCart = async () => {
   try {
     const res = await axios.get(`${apiUrl}/api/${apiPath}/cart`);
     if (res.data.success) {
-      console.log(res.data);
       CartData.value = res.data.data.carts;
       finalTotal.value = res.data.data.final_total;
       total.value = res.data.data.total;

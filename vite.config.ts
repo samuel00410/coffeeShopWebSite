@@ -3,9 +3,12 @@ import vue from "@vitejs/plugin-vue";
 import tailwindcss from "@tailwindcss/vite";
 
 // https://vite.dev/config/
-export default defineConfig({
-  // 設定 base 路徑，請將 'coffeeShopWebsite' 改成你的 GitHub repo 名稱
-  // 如果是部署到 username.github.io（主頁），則設為 '/'
-  base: "/coffeeShopWebSite/",
-  plugins: [vue(), tailwindcss()],
+export default defineConfig(({ mode }) => {
+  // 開發環境使用根路徑，生產環境使用 GitHub Pages 子路徑
+  const base = mode === "production" ? "/coffeeShopWebSite/" : "/";
+
+  return {
+    base,
+    plugins: [vue(), tailwindcss()],
+  };
 });

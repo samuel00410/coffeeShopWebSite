@@ -97,7 +97,7 @@ const getCoupons = async () => {
       tableData.value = res.data.coupons;
     }
   } catch (err) {
-    console.log("取得優惠券失敗:", err);
+    "取得優惠券失敗:", err;
   } finally {
     isLoading.value = false;
   }
