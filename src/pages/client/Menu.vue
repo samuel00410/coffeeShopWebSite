@@ -37,7 +37,9 @@
     </div>
 
     <!-- menu展示 -->
-    <div
+    <TransitionGroup
+      name="card-fade"
+      tag="div"
       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center sm:justify-items-start"
     >
       <FeaturedCard
@@ -49,7 +51,7 @@
         @add-to-cart="addToCart"
         :disabled="status.loadingItem === item.id"
       />
-    </div>
+    </TransitionGroup>
   </div>
 </template>
 
@@ -152,4 +154,25 @@ const addToCart = async (productId: string) => {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.card-fade-move,
+.card-fade-enter-active,
+.card-fade-leave-active {
+  transition: all 0.75s ease-in-out;
+}
+
+.card-fade-enter-from,
+.card-fade-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+.card-fade-enter-to {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.card-fade-active {
+  position: absolute;
+}
+</style>
