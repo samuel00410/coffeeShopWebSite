@@ -406,7 +406,7 @@
 
 <script setup lang="ts">
 import { ToastType } from "../../types/clientToast";
-import { ref, computed, inject } from "vue";
+import { ref, computed, inject, nextTick } from "vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faBagShopping } from "@fortawesome/free-solid-svg-icons";
 import { useCartStore } from "../../stores/cart";
@@ -471,9 +471,19 @@ const computedPaymentMethod = computed(() => {
   }
 });
 
+const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+};
+
 const submitOrder = handleSubmit((values) => {
   // Step 1 -> Step 2 : 驗證通過，進入確認訂單頁面
   currentStep.value = 2;
+  nextTick(() => {
+    scrollToTop();
+  });
 });
 
 // Step 2 -> Step 3：提交訂單
@@ -525,6 +535,10 @@ const createOrder = async () => {
         await cartStore.getCart();
 
         currentStep.value = 3;
+
+        nextTick(() => {
+          scrollToTop();
+        });
       } else {
         // 付款失败（但订单已创建）
         toast?.showCartMsg(
@@ -546,5 +560,8 @@ const createOrder = async () => {
 // Step 2 → Step 1：返回编辑
 const goBackToEdit = () => {
   currentStep.value = 1;
+  nextTick(() => {
+    scrollToTop();
+  });
 };
 </script>

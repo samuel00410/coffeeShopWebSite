@@ -68,7 +68,7 @@
       </div>
       <div class="navbar-end">
         <!-- 手機版菜單 -->
-        <div class="dropdown">
+        <div class="dropdown dropdown-end">
           <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -90,19 +90,6 @@
             tabindex="-1"
             class="menu menu-sm flex-col gap-3 dropdown-content bg-[#FFFBF5] rounded-box z-1 mt-3 w-52 p-2 shadow"
           >
-            <!-- <li>
-              <router-link
-                to="/"
-                active-class=""
-                exact-active-class=""
-                :class="{
-                  'router-link-exact-active': route.path === '/' && !route.hash,
-                }"
-                @click="closeDropdown"
-              >
-                首頁
-              </router-link>
-            </li> -->
             <li>
               <router-link
                 to="/#about"
