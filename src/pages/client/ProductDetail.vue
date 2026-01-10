@@ -9,7 +9,7 @@
       返回菜單
     </button>
 
-    <div class="mb-16 flex flex-col lg:flex-row gap-12">
+    <div class="mb-16 border-[#F7F2EB] flex flex-col lg:flex-row gap-12">
       <div
         class="product_img w-full lg:flex-6 aspect-square lg:max-w-[600px] overflow-hidden rounded-[2.5rem] bg-white border-4 border-white"
       >
@@ -39,7 +39,13 @@
         <div
           class="w-[280px] mb-8 bg-linear-to-r from-[#FAF6F1] to-[#F7F2EB] px-6 py-4 flex items-center justify-between border-2 border-[#FFE8E8] rounded-2xl"
         >
-          <span class="text-xl font-bold text-[#A68F7C]">
+          <span
+            class="text-xl font-bold text-[#A68F7C]"
+            :class="{
+              'line-through':
+                product.price && product.origin_price > product.price,
+            }"
+          >
             原價: ${{ product.origin_price }}
           </span>
           <span class="text-xl font-bold text-[#e43526]">
@@ -81,6 +87,136 @@
       </div>
     </div>
 
+    <!-- 常見問答 -->
+    <div class="border-t-2 border-dashed border-[#E8DBC8] py-16">
+      <h2 class="text-[#5C4A3A] mb-8">常見問答</h2>
+
+      <div
+        class="bg-linear-to-br from-[#FAF6F1] to-[#F7F2EB] rounded-2xl p-8 border-2 border-[#FFE8E8] shadow-sm max-w-4xl space-y-4"
+      >
+        <!-- Q1 -->
+        <div>
+          <h4
+            class="text-lg font-bold text-[#5C4A3A] mb-2 flex items-center gap-2"
+          >
+            <span class="text-[#D4A574]">Q.</span>
+            <span>商品什麼時候可以取餐或出貨？</span>
+          </h4>
+          <div class="space-y-3 pl-6 text-[#6B5D53]">
+            <p class="leading-relaxed">
+              <span class="font-semibold text-[#8B7355]">咖啡與飲品：</span>
+              下單並完成付款後，約
+              <span class="font-semibold">15–20 分鐘</span>
+              內即可製作完成，適合現場取餐或外送。
+            </p>
+            <p class="leading-relaxed">
+              <span class="font-semibold text-[#8B7355]">甜點類商品：</span>
+              若為當日現貨甜點，將於當日製作完成後出餐；若為手工製作甜點，可能需
+              <span class="font-semibold">1–3 個工作天</span
+              >，實際時間依商品頁說明為主。
+            </p>
+          </div>
+        </div>
+
+        <!-- Q2 -->
+        <div>
+          <h4
+            class="text-lg font-bold text-[#5C4A3A] mb-2 flex items-center gap-2"
+          >
+            <span class="text-[#D4A574]">Q.</span>
+            <span>咖啡與飲品可以調整甜度或冰量嗎？</span>
+          </h4>
+          <div class="pl-6 text-[#6B5D53]">
+            <p class="leading-relaxed">
+              大部分飲品皆可調整
+              <span class="font-semibold">甜度、冰量</span
+              >，請在下單時於「備註欄位」告知我們您的需求。若未特別備註，將依店內建議比例製作。
+            </p>
+          </div>
+        </div>
+
+        <!-- Q3 -->
+        <div>
+          <h4
+            class="text-lg font-bold text-[#5C4A3A] mb-2 flex items-center gap-2"
+          >
+            <span class="text-[#D4A574]">Q.</span>
+            <span>甜點的保存方式與保存期限是多久？</span>
+          </h4>
+          <div class="space-y-3 pl-6 text-[#6B5D53]">
+            <p class="leading-relaxed">
+              <span class="font-semibold text-[#8B7355]">咖啡與飲品：</span>
+              建議於當日飲用完畢，風味最佳。
+            </p>
+            <div>
+              <p class="font-semibold text-[#8B7355] mb-2">甜點類商品：</p>
+              <ul class="ml-4 space-y-2 list-none">
+                <li class="flex items-center gap-2">
+                  <span class="text-[#D4A574]">•</span>
+                  <span
+                    ><span class="font-semibold">常溫甜點：</span
+                    >請依商品標示保存期限</span
+                  >
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="text-[#D4A574]">•</span>
+                  <span
+                    ><span class="font-semibold">冷藏甜點：</span
+                    >建議冷藏保存並於 2–3 天內食用</span
+                  >
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="text-[#D4A574]">•</span>
+                  <span
+                    ><span class="font-semibold">冷凍甜點：</span
+                    >可冷凍保存，食用前請提前退冰</span
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q4 -->
+        <div>
+          <h4
+            class="text-lg font-bold text-[#5C4A3A] mb-2 flex items-center gap-2"
+          >
+            <span class="text-[#D4A574]">Q.</span>
+            <span>可以取消或修改訂單嗎？</span>
+          </h4>
+          <div class="space-y-2 pl-6 text-[#6B5D53]">
+            <p class="leading-relaxed">
+              在<span class="font-semibold">尚未開始製作前</span
+              >，可協助修改或取消訂單。
+            </p>
+            <p class="leading-relaxed">
+              若商品已進入製作流程，恕無法取消或退款，敬請見諒。
+            </p>
+          </div>
+        </div>
+
+        <!-- Q5 -->
+        <div>
+          <h4
+            class="text-lg font-bold text-[#5C4A3A] mb-2 flex items-center gap-2"
+          >
+            <span class="text-[#D4A574]">Q.</span>
+            <span>如果收到的商品有問題怎麼辦？</span>
+          </h4>
+          <div class="pl-6 text-[#6B5D53]">
+            <p class="leading-relaxed">
+              我們非常重視您的體驗<br />
+              若收到商品有<span class="font-semibold"
+                >品項錯誤、嚴重瑕疵或運送異常</span
+              >，請於<span class="font-semibold">當日內</span
+              >聯繫我們，並提供相關照片，我們將盡快協助處理。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- 相似商品 -->
     <div>
       <div class="text-center mb-10">
@@ -89,7 +225,7 @@
         >
           <span class="text-sm font-medium text-[#A68F7C]">💫 推薦商品</span>
         </div>
-        <h2 class="text-[#5C4A3A]">相似商品</h2>
+        <h2 class="text-[#5C4A3A] mb-4">相似商品</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           <FeaturedCard
             v-for="item in similarProducts"
