@@ -156,15 +156,15 @@ const addToCart = async (productId: string) => {
 
 <style scoped>
 .card-fade-move {
-  transition: all 0.5s ease-in-out;
+  transition: all 0.7s ease-in-out;
 }
 
 .card-fade-enter-active {
-  transition: all 0.4s ease-out;
+  transition: all 0.7s ease-out;
 }
 
 .card-fade-leave-active {
-  transition: all 0.3s ease-in;
+  transition: all 0.5s ease-in;
 }
 
 .card-fade-enter-from {
