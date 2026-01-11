@@ -2,7 +2,7 @@
   <!-- 卡片布局 -->
   <div
     v-if="variant === 'grid'"
-    class="card group relative h-[600px] bg-white overflow-hidden shadow-[0_6px_0_0_#E8DBC8] transition-all duration-300 hover:shadow-[0_10px_0_0_#E8DBC8] rounded-[2rem] border-4 border-[#4A3D2F] hover:-translate-y-1 cursor-pointer"
+    class="card group relative bg-white overflow-hidden shadow-[0_6px_0_0_#E8DBC8] transition-all duration-300 hover:shadow-[0_10px_0_0_#E8DBC8] rounded-[2rem] border-4 border-[#4A3D2F] hover:-translate-y-1 cursor-pointer flex flex-col"
     :style="{ maxWidth: `${cardWidth}px` }"
     @click="viewDetail"
   >
@@ -17,24 +17,24 @@
     </div>
 
     <!-- 圖片 -->
-    <figure class="overflow-hidden">
+    <figure class="overflow-hidden aspect-square">
       <img
-        class="w-[400px] h-[400px] object-cover group-hover:scale-110 transition-transform duration-500"
+        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         :src="card.imageUrl"
         alt="特選產品"
       />
     </figure>
-    <div class="card-body">
-      <div>
-        <h2 class="card-title text-card-title">{{ card.title }}</h2>
+    <div class="card-body flex-1 flex flex-col">
+      <div class="flex-1 mb-2">
+        <h2 class="mb-1.5 card-title text-card-title">{{ card.title }}</h2>
         <p
-          class="mb-5 text-left text-card-description line-clamp-2 leading-relaxed font-medium"
+          class="text-left text-card-description line-clamp-2 leading-relaxed font-medium"
         >
           {{ card.description }}
         </p>
       </div>
       <div
-        class="card-actions items-center justify-between pt-4 border-t-3 border-[#FFF5E8] border-dashed"
+        class="pt-6 flex-1 card-actions items-center justify-between border-t-3 border-[#FFF5E8] border-dashed mt-auto"
       >
         <div class="flex flex-col">
           <span
@@ -43,7 +43,7 @@
             💰 價格
           </span>
           <span class="text-xl font-black text-[#6B5444]"
-            >$NT {{ card.origin_price }} / 杯</span
+            >$NT {{ card.origin_price }} / {{ card.unit }}</span
           >
         </div>
         <div :class="{ 'cursor-not-allowed': disabled }">

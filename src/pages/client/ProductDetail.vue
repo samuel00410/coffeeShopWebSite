@@ -48,7 +48,7 @@
           >
             原價: ${{ product.origin_price }}
           </span>
-          <span class="text-xl font-bold text-[#e43526]">
+          <span v-if="product.price" class="text-xl font-bold text-[#e43526]">
             優惠: ${{ product.price }}
           </span>
         </div>

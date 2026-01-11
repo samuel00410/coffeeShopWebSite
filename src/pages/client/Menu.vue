@@ -74,7 +74,7 @@ const cartStore = useCartStore();
 const categories = [
   { name: "全部", value: "全部" },
   { name: "咖啡 ☕️", value: "咖啡" },
-  { name: "飲品 🍵", value: "飲品" },
+  { name: "茶飲 🍵", value: "茶飲" },
   { name: "甜點 🍰", value: "甜點" },
 ];
 
