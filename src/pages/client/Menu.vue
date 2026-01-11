@@ -37,21 +37,24 @@
     </div>
 
     <!-- menu展示 -->
-    <TransitionGroup
-      name="card-fade"
-      tag="div"
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center sm:justify-items-start"
-    >
-      <FeaturedCard
-        v-for="item in filteredMenu"
-        :key="item.id"
-        :card="item"
-        :width="350"
-        @view-detail="goProductPage"
-        @add-to-cart="addToCart"
-        :disabled="status.loadingItem === item.id"
-      />
-    </TransitionGroup>
+    <Transition name="list-out-in" mode="out-in" appear>
+      <TransitionGroup
+        name="card-fade"
+        tag="div"
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center sm:justify-items-start"
+        appear
+      >
+        <FeaturedCard
+          v-for="item in filteredMenu"
+          :key="item.id"
+          :card="item"
+          :width="350"
+          @view-detail="goProductPage"
+          @add-to-cart="addToCart"
+          :disabled="status.loadingItem === item.id"
+        />
+      </TransitionGroup>
+    </Transition>
   </div>
 </template>
 
@@ -155,25 +158,50 @@ const addToCart = async (productId: string) => {
 </script>
 
 <style scoped>
+/* 外層整組列表切換 */
+.list-out-in-enter-active,
+.list-out-in-leave-active {
+  transition: opacity 0.01s;
+}
+.list-out-in-enter-from,
+.list-out-in-leave-to {
+  opacity: 1;
+}
+
+/* 每張卡片的進出場 */
 .card-fade-move {
-  transition: all 0.7s ease-in-out;
+  transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
 }
 
+/* 進場 */
 .card-fade-enter-active {
-  transition: all 0.7s ease-out;
+  transition: opacity 1s ease, transform 1s ease;
 }
 
+/* 離場 */
 .card-fade-leave-active {
-  transition: all 0.5s ease-in;
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
+/* 進場起點/終點 */
 .card-fade-enter-from {
   opacity: 0;
-  transform: translateX(20px);
+  transform: translateX(30px);
+}
+
+.card-fade-enter-to {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* 離場起點/終點 */
+.card-fade-leave-from {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .card-fade-leave-to {
   opacity: 0;
-  transform: translateX(-20px);
+  transform: translateX(-30px);
 }
 </style>
