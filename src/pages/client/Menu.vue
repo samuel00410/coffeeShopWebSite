@@ -161,18 +161,17 @@ const addToCart = async (productId: string) => {
   transition: all 0.75s ease-in-out;
 }
 
-.card-fade-enter-from,
-.card-fade-leave-to {
+.card-fade-enter-from {
   opacity: 0;
   transform: translateX(30px);
 }
 
-.card-fade-enter-to {
-  opacity: 1;
-  transform: translateX(0);
+.card-fade-leave-to {
+  opacity: 0;
+  transform: translateX(-30px);
 }
 
-.card-fade-active {
+.card-fade-leave-active {
   position: absolute;
 }
 </style>
