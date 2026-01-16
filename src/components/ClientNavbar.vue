@@ -61,6 +61,7 @@
             <router-link
               :to="{ name: 'Login' }"
               class="nav-link font-black text-lg"
+              target="_blank"
               >商品管理</router-link
             >
           </li>
@@ -105,7 +106,10 @@
               <router-link to="/menu" @click="closeDropdown">菜單</router-link>
             </li>
             <li>
-              <router-link :to="{ name: 'Login' }" @click="closeDropdown"
+              <router-link
+                :to="{ name: 'Login' }"
+                @click="closeDropdown"
+                target="_blank"
                 >商品管理</router-link
               >
             </li>

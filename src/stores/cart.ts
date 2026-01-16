@@ -60,7 +60,8 @@ export const useCartStore = defineStore("cart", () => {
         finalTotal.value = res.data.data.final_total;
         total.value = res.data.data.total;
 
-        if (res.data.data.carts[0].coupon) {
+        // 檢查購物車是否有資料才讀取優惠券
+        if (res.data.data.carts.length > 0 && res.data.data.carts[0].coupon) {
           appliedCoupon.value = res.data.data.carts[0].coupon.code;
         } else {
           appliedCoupon.value = null;
