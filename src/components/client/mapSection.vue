@@ -1,5 +1,5 @@
 <template>
-  <section class="map-section px-6 py-20">
+  <section class="map-section relative px-6 py-20">
     <div class="container mx-auto">
       <div class="text-center mb-16">
         <div

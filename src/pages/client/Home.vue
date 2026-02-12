@@ -1,14 +1,18 @@
 <template>
   <HeroSection />
-  <PromotionSection />
-  <AboutSection id="about" />
-  <FeaturedMenuSection />
-  <mapSection />
+  <div class="below-hero relative overflow-hidden">
+    <SideDecor />
+    <PromotionSection />
+    <AboutSection id="about" />
+    <FeaturedMenuSection />
+    <mapSection />
+  </div>
 </template>
 
 <script setup lang="ts">
 import type { ToastType } from "../../types/clientToast";
 import HeroSection from "../../components/client/HeroSection.vue";
+import SideDecor from "../../components/client/SideDecor.vue";
 import PromotionSection from "../../components/client/PromotionSection.vue";
 import FeaturedMenuSection from "../../components/client/featuredMenuSection.vue";
 import AboutSection from "../../components/client/AboutSection.vue";

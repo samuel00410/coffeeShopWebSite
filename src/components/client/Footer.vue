@@ -1,7 +1,10 @@
 <template>
   <footer
-    class="w-full bg-linear-to-b from-background via-[#FFF0E8] to-[#FFE8DD] mt-20 border-t-2 border-[#4A3D2F] border-opacity-10 relative overflow-hidden"
+    class="w-full bg-linear-to-b from-background via-[#FFF0E8] to-[#FFE8DD] mt-20 border-t-2 border-[#4A3D2F] border-opacity-10 relative"
   >
+    <div class="absolute right-10 top-0 -translate-y-full opacity-80">
+      <img :src="duckWalkImg" />
+    </div>
     <div class="container mx-auto px-4 py-12">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
         <!-- Logo + 網站名稱 -->
@@ -171,6 +174,7 @@
 <script setup lang="ts">
 import logoImg from "../../assets/images/hero/s0126_27_0.png";
 import footerImg from "../../assets/images/footer/s0121_22_3.png";
+import duckWalkImg from "../../assets/images/footer/b_illust_49_1L.png";
 import { MapPinIcon, PhoneIcon, ClockIcon } from "@heroicons/vue/24/outline";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
