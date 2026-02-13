@@ -62,6 +62,11 @@ const routes = [
         component: () => import("../pages/admin/Coupons.vue"),
       },
       {
+        path: "posts",
+        name: "Posts",
+        component: () => import("../pages/admin/Posts.vue"),
+      },
+      {
         path: "/:pathMatch(.*)*",
         name: "AdminNotFound",
         component: () => import("../pages/admin/notFoundPage.vue"),

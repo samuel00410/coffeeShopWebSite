@@ -28,19 +28,6 @@
       </div>
       <div class="navbar-center hidden lg:flex">
         <ul class="menu menu-horizontal flex items-center gap-2 px-1">
-          <!-- <li>
-            <router-link
-              to="/"
-              active-class=""
-              exact-active-class=""
-              class="nav-link font-black text-lg"
-              :class="{
-                'router-link-exact-active': route.path === '/' && !route.hash,
-              }"
-            >
-              首頁
-            </router-link>
-          </li> -->
           <li>
             <router-link
               to="/#about"
@@ -50,6 +37,17 @@
               :class="{ 'router-link-exact-active': route.hash === '#about' }"
             >
               關於我們
+            </router-link>
+          </li>
+          <li>
+            <router-link
+              to="/#news"
+              active-class=""
+              exact-active-class=""
+              class="nav-link font-black text-lg"
+              :class="{ 'router-link-exact-active': route.hash === '#news' }"
+            >
+              最新消息
             </router-link>
           </li>
           <li>

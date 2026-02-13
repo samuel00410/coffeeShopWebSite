@@ -55,6 +55,11 @@
             優惠券
           </router-link>
         </li>
+        <li>
+          <router-link to="/admin/posts" class="font-medium">
+            文章
+          </router-link>
+        </li>
       </ul>
     </div>
 
@@ -94,7 +99,7 @@ const logOut = async () => {
     const res = await axios.post(
       `${apiUrl}/logout`,
       {},
-      { headers: { Authorization: token } }
+      { headers: { Authorization: token } },
     );
     if (res.data.success) {
       router.push("/login");
