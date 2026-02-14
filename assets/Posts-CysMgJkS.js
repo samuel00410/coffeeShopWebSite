@@ -1,1 +1,0 @@
-import{d as s,c as n,a as t,o as a}from"./index-B139_dfQ.js";const l={class:"flex items-center justify-between"},d=s({__name:"Posts",setup(r){const o=()=>{console.log("打開新增彈窗")};return(c,e)=>(a(),n("div",l,[e[1]||(e[1]=t("h2",{class:"text-2xl font-bold"},"文章",-1)),t("button",{class:"btn btn-primary",onClick:e[0]||(e[0]=i=>o())},"新增文章")]))}});export{d as default};
