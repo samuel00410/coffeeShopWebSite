@@ -6,6 +6,9 @@
   --color-hero-top: #fff9f0; /* Hero 頂部 */
   --color-hero-bottom: #fffbf5; /* Hero 底部 */
 
+  /* 字型 */
+  --font-jp: "Noto Sans JP", sans-serif;
+
   /* 自訂字體大小 */
   --text-title: 48px;
 
@@ -38,6 +41,12 @@
       opacity: 1;
       transform: translateY(0);
     }
+  }
+}
+
+@layer base {
+  body {
+    @apply font-jp;
   }
 }
 
