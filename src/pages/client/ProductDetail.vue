@@ -226,7 +226,9 @@
           <span class="text-sm font-medium text-[#A68F7C]">💫 推薦商品</span>
         </div>
         <h2 class="text-[#5C4A3A] mb-4">相似商品</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center"
+        >
           <FeaturedCard
             v-for="item in similarProducts"
             :key="item.id"
@@ -282,7 +284,7 @@ const totalPrice = computed(() => product.value.price * quantity.value);
 const btnClass = computed(() =>
   status.value.loadingItem
     ? "min-w-[300px] w-[50%] px-10 py-5 text-lg bg-[#E8DBC8] text-[#A89582] shadow-[0_4px_0_0_#D4C4B0] border-3 border-[#C4B5A0] rounded-2xl cursor-not-allowed "
-    : "min-w-[300px] w-[50%] px-10 py-5 text-lg bg-[#FFD4B0] text-[#4A3D2F] hover:bg-[#FFC098] shadow-[0_4px_0_0_#C4A68A] hover:shadow-[0_6px_0_0_#C4A68A] border-3 border-[#4A3D2F] rounded-2xl cursor-pointer"
+    : "min-w-[300px] w-[50%] px-10 py-5 text-lg bg-[#FFD4B0] text-[#4A3D2F] hover:bg-[#FFC098] shadow-[0_4px_0_0_#C4A68A] hover:shadow-[0_6px_0_0_#C4A68A] border-3 border-[#4A3D2F] rounded-2xl cursor-pointer",
 );
 
 const getProduct = async () => {
@@ -387,7 +389,7 @@ watch(
     if (newId) {
       getProduct();
     }
-  }
+  },
 );
 </script>
 
