@@ -240,7 +240,7 @@
                   <span class="text-[#4A3D2F] font-bold">
                     {{
                       new Date(orderResult.createAt * 1000).toLocaleString(
-                        "zh-TW"
+                        "zh-TW",
                       )
                     }}
                   </span>
@@ -406,17 +406,34 @@
 
 <script setup lang="ts">
 import { ToastType } from "../../types/clientToast";
-import { ref, computed, inject, nextTick } from "vue";
+import { ref, computed, inject, nextTick, onMounted } from "vue";
+import { useRoute } from "vue-router";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faBagShopping } from "@fortawesome/free-solid-svg-icons";
 import { useCartStore } from "../../stores/cart";
 import { useForm } from "vee-validate";
 import * as yup from "yup";
 import api from "../../utils/api";
+import axios from "axios";
+
+onMounted(() => {
+  // 檢查 URL 是否帶有 ?payment=success 參數（綠界付款完成後會帶回這個參數）
+  if (route.query.payment === "success") {
+    orderResult.value = {
+      orderId: route.query.orderId as string,
+      createAt: Math.floor(Date.now() / 1000), // 綠界導回時沒有這個值，用當下時間
+      total: 0,
+    };
+    currentStep.value = 3;
+    scrollToTop();
+  }
+});
 
 const toast = inject<{
   showCartMsg(msg: string, type: ToastType): void;
 }>("toast");
+
+const route = useRoute();
 
 const cartStore = useCartStore();
 
@@ -512,40 +529,60 @@ const createOrder = async () => {
     // 創建訂單
     const orderRes = await api.post(
       `/api/${import.meta.env.VITE_API_PATH}/order`,
-      formData
+      formData,
     );
 
     if (orderRes.data.success) {
       const orderId = orderRes.data.orderId;
 
-      const payRes = await api.post(
-        `/api/${import.meta.env.VITE_API_PATH}/pay/${orderId}`
-      );
-
-      if (payRes.data.success) {
-        // 储存订单结果
-        orderResult.value = {
-          orderId: orderId,
-          createAt: orderRes.data.create_at,
-          total: orderRes.data.total,
-        };
-
-        toast?.showCartMsg("訂單建立成功並已完成付款！", "success");
-
-        await cartStore.getCart();
-
-        currentStep.value = 3;
-
-        nextTick(() => {
-          scrollToTop();
-        });
-      } else {
-        // 付款失败（但订单已创建）
-        toast?.showCartMsg(
-          `訂單已建立，但付款失敗。訂單編號：${orderId}`,
-          "error"
+      if (values.paymentMethod === "creditCard") {
+        // 付款方式選信用卡時，走綠界金流
+        const ecpayRes = await axios.post(
+          "https://coffeeshop-payment.zeabur.app/pay",
+          {
+            orderId: orderId,
+            total: cartStore.finalTotal,
+            itemName: cartStore.cartData.map((i) => i.product.title).join("#"),
+          },
         );
-        console.error("付款失败:", payRes.data);
+
+        // 把後端回傳的 HTML 注入到頁面，然後自動 submit
+        // 這個動作會讓瀏覽器離開你的網站，跳到綠界付款頁
+        const div = document.createElement("div");
+        div.innerHTML = ecpayRes.data;
+        document.body.appendChild(div);
+        (div.querySelector("form") as HTMLFormElement).submit();
+      } else {
+        // 現金付款
+        const payRes = await api.post(
+          `/api/${import.meta.env.VITE_API_PATH}/pay/${orderId}`,
+        );
+
+        if (payRes.data.success) {
+          // 储存订单结果
+          orderResult.value = {
+            orderId: orderId,
+            createAt: orderRes.data.create_at,
+            total: orderRes.data.total,
+          };
+
+          toast?.showCartMsg("訂單建立成功並已完成付款！", "success");
+
+          await cartStore.getCart();
+
+          currentStep.value = 3;
+
+          nextTick(() => {
+            scrollToTop();
+          });
+        } else {
+          // 付款失败（但订单已创建）
+          toast?.showCartMsg(
+            `訂單已建立，但付款失敗。訂單編號：${orderId}`,
+            "error",
+          );
+          console.error("付款失败:", payRes.data);
+        }
       }
     }
   } catch (err: any) {
