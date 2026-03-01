@@ -18,13 +18,14 @@
 </template>
 
 <script setup lang="ts">
+import type { ToastType } from "../types/clientToast";
 import { ref, onMounted, computed } from "vue";
 
 const visible = ref(false);
 
 const currentTitle = ref("");
 const currentMessage = ref("");
-const currentType = ref<"success" | "error" | "warning">("success");
+const currentType = ref<ToastType>("success");
 
 const headerColorClass = computed(() => {
   switch (currentType.value) {
@@ -46,7 +47,7 @@ const hideToast = () => {
 const showToast = (
   title: string,
   message: string,
-  type: "success" | "error" | "warning" = "success"
+  type: ToastType = "success",
 ) => {
   currentTitle.value = title;
   currentMessage.value = message;

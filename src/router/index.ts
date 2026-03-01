@@ -95,7 +95,7 @@ router.beforeEach(async (to, from, next) => {
   // 前往結帳頁面時檢查購物車
   if (to.name === "Checkout") {
     // 如果是從綠界付款完成導向回來的，直接放行
-    if (to.query.ecpay === "success") {
+    if (to.query.payment === "success") {
       next();
       return;
     }
