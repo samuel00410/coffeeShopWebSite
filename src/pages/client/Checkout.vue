@@ -419,11 +419,18 @@ import axios from "axios";
 onMounted(() => {
   // 檢查 URL 是否帶有 ?payment=success 參數（綠界付款完成後會帶回這個參數）
   if (route.query.payment === "success") {
-    orderResult.value = {
-      orderId: route.query.orderId as string,
-      createAt: Math.floor(Date.now() / 1000), // 綠界導回時沒有這個值，用當下時間
-      total: 0,
-    };
+    // 從 localStorage 讀回離開前的資料
+    const pending = localStorage.getItem("pendingOrder");
+    if (pending) {
+      const data = JSON.parse(pending);
+      orderResult.value = {
+        orderId: data.orderId,
+        createAt: data.createAt,
+        total: data.snapshot.finalTotal,
+      };
+      orderSnapshot.value = data.snapshot;
+      localStorage.removeItem("pendingOrder"); // 用完清掉，避免下次進來又顯示舊資料
+    }
     currentStep.value = 3;
     scrollToTop();
   }
@@ -551,6 +558,17 @@ const createOrder = async () => {
         const div = document.createElement("div");
         div.innerHTML = ecpayRes.data;
         document.body.appendChild(div);
+
+        // 跳轉前把訂單資料存到 localStorage，回來後可以還原
+        localStorage.setItem(
+          "pendingOrder",
+          JSON.stringify({
+            orderId: orderId,
+            createAt: Math.floor(Date.now() / 1000),
+            snapshot: orderSnapshot.value,
+          }),
+        );
+
         (div.querySelector("form") as HTMLFormElement).submit();
       } else {
         // 現金付款
