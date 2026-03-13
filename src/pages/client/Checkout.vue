@@ -369,7 +369,7 @@
               >
                 <span>付款方式</span>
 
-                <span>{{ computedPaymentMethod }}</span>
+                <span>{{ computedSnapshotPaymentMethod }}</span>
               </div>
             </div>
 
@@ -593,6 +593,17 @@ const computedPaymentMethod = computed(() => {
       return "信用卡";
     default:
       return "";
+  }
+});
+
+const computedSnapshotPaymentMethod = computed(() => {
+  switch (orderSnapshot.value.paymentMethod) {
+    case "cash":
+      return "現金";
+    case "creditCard":
+      return "信用卡";
+    default:
+      return computedPaymentMethod.value;
   }
 });
 
