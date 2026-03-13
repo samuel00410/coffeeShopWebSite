@@ -265,7 +265,7 @@
             <h3 class="text-[#4A3D2F] mb-8">訂單明細</h3>
             <div class="pb-5 border-b-2 border-[#FFE5D1]">
               <div
-                v-for="item in cartStore.cartData"
+                v-for="item in checkoutCartItems"
                 :key="item.id"
                 class="flex gap-4 mb-3"
               >
@@ -405,7 +405,7 @@
 </template>
 
 <script setup lang="ts">
-import { ToastType } from "../../types/clientToast";
+import type { ToastType } from "../../types/clientToast";
 import { ref, computed, inject, nextTick, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -416,25 +416,32 @@ import * as yup from "yup";
 import api from "../../utils/api";
 import axios from "axios";
 
-onMounted(() => {
-  // 檢查 URL 是否帶有 ?payment=success 參數（綠界付款完成後會帶回這個參數）
-  if (route.query.payment === "success") {
-    // 從 localStorage 讀回離開前的資料
-    const pending = localStorage.getItem("pendingOrder");
-    if (pending) {
-      const data = JSON.parse(pending);
-      orderResult.value = {
-        orderId: data.orderId,
-        createAt: data.createAt,
-        total: data.snapshot.finalTotal,
-      };
-      orderSnapshot.value = data.snapshot;
-      localStorage.removeItem("pendingOrder"); // 用完清掉，避免下次進來又顯示舊資料
-    }
-    currentStep.value = 3;
-    scrollToTop();
-  }
-});
+type CheckoutSnapshot = {
+  items: OrderItem[];
+  total: number;
+  finalTotal: number;
+  discount: number;
+  hasCoupon: boolean;
+  paymentMethod: "" | "cash" | "creditCard";
+};
+
+type OrderItem = {
+  id: string;
+  qty: number;
+  total: number;
+  product: {
+    title: string;
+    price: number;
+    imageUrl: string;
+  };
+  coupon?: unknown;
+};
+
+type PendingOrder = {
+  orderId: string;
+  createAt: number;
+  snapshot: CheckoutSnapshot;
+};
 
 const toast = inject<{
   showCartMsg(msg: string, type: ToastType): void;
@@ -454,12 +461,13 @@ const orderResult = ref({
 });
 
 // 備份購物車資料用（用於 Step 3 顯示）
-const orderSnapshot = ref({
+const orderSnapshot = ref<CheckoutSnapshot>({
   items: [],
   total: 0,
   finalTotal: 0,
   discount: 0,
   hasCoupon: false,
+  paymentMethod: "",
 });
 
 // 定義驗證規則
@@ -474,8 +482,101 @@ const schema = yup.object({
   orderNotes: yup.string(),
 });
 
-const { values, errors, handleSubmit, defineField } = useForm({
+const { values, errors, handleSubmit, defineField, setFieldValue } = useForm({
   validationSchema: schema,
+});
+
+const readPendingOrder = (): PendingOrder | null => {
+  const pending = localStorage.getItem("pendingOrder");
+  if (!pending) {
+    return null;
+  }
+
+  try {
+    const parsed = JSON.parse(pending) as PendingOrder;
+    if (!parsed?.orderId || !parsed?.snapshot) {
+      return null;
+    }
+    return parsed;
+  } catch (error) {
+    console.error("讀取 pendingOrder 失敗:", error);
+    return null;
+  }
+};
+
+const applyOrderState = (data: PendingOrder) => {
+  orderResult.value = {
+    orderId: data.orderId,
+    createAt: data.createAt,
+    total: data.snapshot.finalTotal,
+  };
+  orderSnapshot.value = data.snapshot;
+  setFieldValue("paymentMethod", data.snapshot.paymentMethod || "creditCard");
+};
+
+const restoreOrderFromApi = async (orderId: string) => {
+  try {
+    const res = await api.get(
+      `/api/${import.meta.env.VITE_API_PATH}/order/${orderId}`,
+    );
+    if (!res.data.success || !res.data.order) {
+      return false;
+    }
+
+    const order = res.data.order;
+    const items = Object.values(order.products || {}) as OrderItem[];
+    const hasCoupon = items.some((item) => Boolean(item?.coupon));
+
+    orderResult.value = {
+      orderId: order.id,
+      createAt: order.create_at,
+      total: order.total,
+    };
+
+    orderSnapshot.value = {
+      items,
+      total: order.total,
+      finalTotal: order.total,
+      discount: 0,
+      hasCoupon,
+      paymentMethod: "creditCard",
+    };
+    setFieldValue("paymentMethod", "creditCard");
+
+    return true;
+  } catch (error) {
+    console.error("API 還原訂單失敗:", error);
+    return false;
+  }
+};
+
+onMounted(async () => {
+  // 檢查 URL 是否帶有 ?payment=success 參數（綠界付款完成後會帶回這個參數）
+  if (route.query.payment !== "success") {
+    return;
+  }
+
+  let restored = false;
+  const pendingOrder = readPendingOrder();
+
+  if (pendingOrder) {
+    applyOrderState(pendingOrder);
+    restored = true;
+  } else {
+    const orderId =
+      typeof route.query.orderId === "string" ? route.query.orderId : "";
+    if (orderId) {
+      restored = await restoreOrderFromApi(orderId);
+    }
+  }
+
+  if (!restored) {
+    toast?.showCartMsg("付款成功，但訂單資料還原失敗，請聯絡客服。", "error");
+    return;
+  }
+
+  currentStep.value = 3;
+  scrollToTop();
 });
 
 const [name, nameAttrs] = defineField("name");
@@ -495,6 +596,10 @@ const computedPaymentMethod = computed(() => {
   }
 });
 
+const checkoutCartItems = computed<OrderItem[]>(() => {
+  return cartStore.cartData as OrderItem[];
+});
+
 const scrollToTop = () => {
   window.scrollTo({
     top: 0,
@@ -502,7 +607,7 @@ const scrollToTop = () => {
   });
 };
 
-const submitOrder = handleSubmit((values) => {
+const submitOrder = handleSubmit(() => {
   // Step 1 -> Step 2 : 驗證通過，進入確認訂單頁面
   currentStep.value = 2;
   nextTick(() => {
@@ -514,11 +619,12 @@ const submitOrder = handleSubmit((values) => {
 const createOrder = async () => {
   // 備份購物車資料
   orderSnapshot.value = {
-    items: JSON.parse(JSON.stringify(cartStore.cartData)),
+    items: JSON.parse(JSON.stringify(checkoutCartItems.value)),
     total: cartStore.total,
     finalTotal: cartStore.finalTotal,
     discount: cartStore.discount,
     hasCoupon: cartStore.hasCoupon,
+    paymentMethod: values.paymentMethod as "cash" | "creditCard",
   };
 
   const formData = {
@@ -549,7 +655,9 @@ const createOrder = async () => {
           {
             orderId: orderId,
             total: cartStore.finalTotal,
-            itemName: cartStore.cartData.map((i) => i.product.title).join("#"),
+            itemName: checkoutCartItems.value
+              .map((i) => i.product.title)
+              .join("#"),
           },
         );
 
