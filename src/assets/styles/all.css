@@ -1,0 +1,34 @@
+@import "tailwindcss";
+@plugin "daisyui";
+@import "./variables.css";
+@import "./base.css";
+@import "./components.css";
+
+@theme {
+  /* 購物車跳動動畫 */
+  --animate-cart-bounce: cart-bounce 1s ease-in-out infinite;
+  @keyframes cart-bounce {
+    0%,
+    100% {
+      transform: translateY(-10%);
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    50% {
+      transform: none;
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+  }
+
+  /* 文字浮現動畫 */
+  --animate-text-fade-in: text-fade-in 0.2s ease-in-out forwards;
+  @keyframes text-fade-in {
+    0% {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
