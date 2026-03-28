@@ -77,7 +77,11 @@
           </div>
         </div>
 
-        <button :class="btnClass" @click="addItemToCart(product.id)">
+        <button
+          :disabled="status.loadingItem === product.id"
+          :class="btnClass"
+          @click="addItemToCart(product.id)"
+        >
           <span
             v-if="status.loadingItem"
             class="loading loading-spinner"
@@ -345,6 +349,10 @@ const goProductPage = (productId: string) => {
 
 // 相似產品加入購物車
 const addToCart = async (productId: string) => {
+  if (status.value.loadingItem === productId) {
+    return;
+  }
+
   try {
     status.value.loadingItem = productId;
     const res = await axios.post(`${apiUrl}/api/${apiPath}/cart`, {
@@ -352,17 +360,22 @@ const addToCart = async (productId: string) => {
     });
 
     if (res.data.success) {
-      status.value.loadingItem = "";
       toast?.showCartMsg("已成功加入購物車！", "success");
       cartStore.getCart();
     }
   } catch (err) {
     console.error("加入購物車失敗:", err);
+  } finally {
+    status.value.loadingItem = "";
   }
 };
 
 // 單一產品加入購物車(可選數量)
 const addItemToCart = async (productId: string) => {
+  if (status.value.loadingItem === productId) {
+    return;
+  }
+
   try {
     status.value.loadingItem = productId;
     const res = await axios.post(`${apiUrl}/api/${apiPath}/cart`, {
@@ -370,12 +383,13 @@ const addItemToCart = async (productId: string) => {
     });
 
     if (res.data.success) {
-      status.value.loadingItem = "";
       toast?.showCartMsg("已成功加入購物車！", "success");
       cartStore.getCart();
     }
   } catch (err) {
     console.error("加入購物車失敗:", err);
+  } finally {
+    status.value.loadingItem = "";
   }
 };
 
