@@ -5,7 +5,7 @@
     <PromotionSection />
     <AboutSection id="about" />
     <FeaturedMenuSection />
-    <mapSection />
+    <StoreLocator />
   </div>
 </template>
 
@@ -16,7 +16,8 @@ import SideDecor from "../../components/client/SideDecor.vue";
 import PromotionSection from "../../components/client/PromotionSection.vue";
 import FeaturedMenuSection from "../../components/client/featuredMenuSection.vue";
 import AboutSection from "../../components/client/AboutSection.vue";
-import mapSection from "../../components/client/mapSection.vue";
+// import mapSection from "../../components/client/mapSection.vue";
+import StoreLocator from "./mapView/StoreLocator.vue";
 import { useCartStore } from "../../stores/cart";
 import { inject, onMounted } from "vue";
 import { useRoute } from "vue-router";

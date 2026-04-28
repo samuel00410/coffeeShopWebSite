@@ -23,4 +23,10 @@ dist-ssr
 *.sln
 *.sw?
 
+# 自己寫的檔案
 readmeBys.txt
+.mcp.json
+
+# AI 產生的檔案
+*.claude
+CLAUDE.md
