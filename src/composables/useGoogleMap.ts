@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref, onUnmounted } from "vue";
 import { setOptions, importLibrary } from "@googlemaps/js-api-loader";
 import type { Store } from "../types/stores";
 
@@ -15,7 +15,7 @@ export function useGoogleMap() {
       v: "weekly",
     });
 
-    const { Map } = await importLibrary("maps");
+    const { Map, InfoWindow } = await importLibrary("maps");
 
     // 建立地圖，掛到 DOM
     mapInstance.value = new Map(el, {
@@ -26,6 +26,7 @@ export function useGoogleMap() {
 
     // 載入 Marker library，建立 marker
     const { Marker } = await importLibrary("marker");
+    const infoWindow = new InfoWindow();
     for (const store of stores) {
       // 建立並「釘」到地圖
       const marker = new Marker({
@@ -34,6 +35,26 @@ export function useGoogleMap() {
         title: store.name, // 鼠標移到 marker 上會顯示的文字
       });
       markers.push(marker);
+
+      marker.addListener("click", () => {
+        infoWindow.setContent(`
+          <div style="font-family: sans-serif; padding: 10px; min-width: 200px;">
+            <h2 style="text-align: center; font-weight: 700; font-size: 15px; color: #4A3D2F; margin: 0 0 8px;">${store.name}</h2>
+            <p style="font-size: 13px; color: #6B5444; margin: 0 0 4px 0;">📍 ${store.address}</p>
+            <p style="font-size: 13px; color: #6B5444; margin: 0 0 4px 0;">📞 ${store.phone}</p>
+            <p style="font-size: 13px; color: #6B5444; margin: 0 0 10px 0;">🕐 ${store.hours}</p>
+            <div style="text-align: center;">
+              <a href="https://www.google.com/maps/dir/?api=1&destination=${store.lat},${store.lng}"
+                target="_blank"
+                rel="noopener noreferrer"
+                style="display: inline-block; background: #4A3D2F; color: #fff; font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 9999px; text-decoration: none;">
+                導航前往
+              </a>
+            </div>
+          </div>
+        `);
+        infoWindow.open({ anchor: marker, map: mapInstance.value });
+      });
     }
   }
 
@@ -42,6 +63,12 @@ export function useGoogleMap() {
     mapInstance.value?.panTo({ lat: store.lat, lng: store.lng });
     mapInstance.value?.setZoom(16);
   }
+
+  // Composable 裡的 lifecycle hook 會自動綁定到「呼叫它的元件」的生命週期，所以這裡的 onUnmounted 是在說「當使用這個 composable 的元件被卸載時，要執行這段程式碼」
+  onUnmounted(() => {
+    // 元件卸載時清除 marker 和地圖 instance，避免記憶體洩漏
+    markers.forEach((marker) => marker.setMap(null));
+  });
 
   return {
     initMap,
