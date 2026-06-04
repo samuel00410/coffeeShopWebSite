@@ -59,6 +59,16 @@
           </li>
           <li>
             <router-link
+              to="/#stores"
+              active-class=""
+              exact-active-class=""
+              class="nav-link font-black text-lg"
+              :class="{ 'router-link-exact-active': route.hash === '#stores' }"
+              >門市資訊</router-link
+            >
+          </li>
+          <li>
+            <router-link
               :to="{ name: 'Login' }"
               class="nav-link font-black text-lg"
               target="_blank"
@@ -104,6 +114,18 @@
             </li>
             <li>
               <router-link to="/menu" @click="closeDropdown">菜單</router-link>
+            </li>
+            <li>
+              <router-link
+                to="/#stores"
+                active-class=""
+                exact-active-class=""
+                :class="{
+                  'router-link-exact-active': route.hash === '#stores',
+                }"
+                @click="closeDropdown"
+                >門市資訊</router-link
+              >
             </li>
             <li>
               <router-link

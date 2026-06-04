@@ -23,4 +23,16 @@ dist-ssr
 *.sln
 *.sw?
 
+# 自己寫的檔案
 readmeBys.txt
+.mcp.json
+
+# AI 產生的檔案
+.claude/settings.local.json
+.claude/skills/
+.claude/agents/
+.claude/agent-memory/
+.codex/
+skills-lock.json
+.mcp.json
+.agents
