@@ -28,5 +28,11 @@ readmeBys.txt
 .mcp.json
 
 # AI 產生的檔案
-*.claude
-CLAUDE.md
+.claude/settings.local.json
+.claude/skills/
+.claude/agents/
+.claude/agent-memory/
+.codex/
+skills-lock.json
+.mcp.json
+.agents

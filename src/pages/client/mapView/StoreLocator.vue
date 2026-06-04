@@ -11,15 +11,36 @@
         <h2 className="text-[#4A3D2F] transform rotate-1">如何前往 🗺️</h2>
       </div>
 
-      <StoreMapView :stores="stores" />
+      <div class="flex flex-col lg:flex-row gap-6">
+        <div class="flex-1">
+          <StoreMapView ref="mapRef" :stores="stores" />
+        </div>
+        <div class="flex flex-row lg:flex-col gap-4 lg:w-[280px]">
+          <StoreCard
+            v-for="store in stores"
+            :key="store.id"
+            :store="store"
+            @select="onSelectStore"
+          />
+        </div>
+      </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
+import type { Store } from "../../../types/stores";
+import { ref } from "vue";
 import { MapPinIcon } from "@heroicons/vue/24/outline";
 import StoreMapView from "../../../components/client/mapView/StoreMapView.vue";
+import StoreCard from "../../../components/client/StoreCard.vue";
 import { stores } from "../../../data/stores";
+
+const mapRef = ref<InstanceType<typeof StoreMapView> | null>(null);
+
+function onSelectStore(store: Store) {
+  mapRef.value?.panTo(store);
+}
 </script>
 
 <style lang="scss" scoped></style>

@@ -5,7 +5,7 @@
     <PromotionSection />
     <AboutSection id="about" />
     <FeaturedMenuSection />
-    <StoreLocator />
+    <StoreLocator id="stores" />
   </div>
 </template>
 
