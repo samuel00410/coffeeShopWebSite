@@ -2,7 +2,7 @@
   <section ref="sectionRef" class="promotion-section py-20 px-6 bg-hero-bottom">
     <div class="max-w-6xl mx-auto">
       <!-- 標題 -->
-      <div class="text-center mb-16">
+      <div v-animate-on-scroll="'fade-up'" class="text-center mb-16">
         <div class="inline-flex items-center gap-3">
           <font-awesome-icon class="text-[#6B5444] text-2xl" :icon="faTicket" />
 

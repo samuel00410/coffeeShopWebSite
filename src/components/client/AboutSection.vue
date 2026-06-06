@@ -5,7 +5,7 @@
   >
     <div class="max-w-6xl mx-auto">
       <!-- 標題 -->
-      <div class="mb-16 text-center">
+      <div v-animate-on-scroll="'fade-up'" class="mb-16 text-center">
         <div class="inline-flex gap-3 items-center">
           <FontAwesomeIcon class="text-[#6B5444] text-2xl" :icon="faShop" />
           <h2 class="text-[#6B5444]">關於我們</h2>
@@ -39,7 +39,16 @@
           </div>
           <div class="col-span-6">
             <div class="flex items-end justify-between mb-6">
-              <h3 class="text-[#4A3D2F]">開放 & 便利的空間</h3>
+              <h3
+                v-animate-on-scroll="{
+                  effect: 'fade-right',
+                  duration: 750,
+                  delay: 200,
+                }"
+                class="text-[#4A3D2F]"
+              >
+                開放 & 便利的空間
+              </h3>
 
               <!-- 動物貼圖 -->
               <div
@@ -51,12 +60,22 @@
             </div>
             <div class="space-y-6 text-[#6B5444] text-lg">
               <div
+                v-animate-on-scroll="{
+                  effect: 'fade-right',
+                  duration: 750,
+                  delay: 300,
+                }"
                 class="flex items-start gap-3 p-5 bg-white rounded-2xl border-2 border-[#FFE5D1]"
               >
                 <span class="text-[#FFD4B0] text-xl mt-0.5">✓</span>
                 <span>擁有寬敞的座位與絕佳的採光，與您一起度過愜意的午後</span>
               </div>
               <div
+                v-animate-on-scroll="{
+                  effect: 'fade-right',
+                  duration: 750,
+                  delay: 400,
+                }"
                 class="flex items-start gap-3 p-5 bg-white rounded-2xl border-2 border-[#FFE5D1]"
               >
                 <span class="text-[#FFD4B0] text-xl mt-0.5">✓</span>
@@ -72,7 +91,16 @@
         >
           <div class="col-span-6 order-2 lg:order-1">
             <div class="flex items-end gap-6 mb-6">
-              <h3 class="text-[#4A3D2F]">舒適 & 悠閒的場所</h3>
+              <h3
+                v-animate-on-scroll="{
+                  effect: 'fade-left',
+                  duration: 750,
+                  delay: 200,
+                }"
+                class="text-[#4A3D2F]"
+              >
+                舒適 & 悠閒的場所
+              </h3>
 
               <!-- 動物貼圖 -->
               <div
@@ -84,13 +112,23 @@
             </div>
 
             <div class="space-y-6 text-[#6B5444] text-lg">
-              <div
+              <di
+                v-animate-on-scroll="{
+                  effect: 'fade-left',
+                  duration: 750,
+                  delay: 400,
+                }"
                 class="flex items-start gap-3 p-5 bg-white rounded-2xl border-2 border-[#FFE5D1]"
               >
                 <span class="text-[#FFD4B0] text-xl mt-0.5">✓</span>
                 <span>本店採半自助式，免收服務費</span>
-              </div>
+              </di>
               <div
+                v-animate-on-scroll="{
+                  effect: 'fade-left',
+                  duration: 750,
+                  delay: 400,
+                }"
                 class="flex items-start gap-3 p-5 bg-white rounded-2xl border-2 border-[#FFE5D1]"
               >
                 <span class="text-[#FFD4B0] text-xl mt-0.5">✓</span>

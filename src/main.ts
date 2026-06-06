@@ -1,5 +1,6 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
+import { vAnimateOnScroll } from "./directives/animeOnScroll.ts";
 import "./assets/styles/all.css";
 import router from "./router";
 import App from "./App.vue";
@@ -13,4 +14,5 @@ app.use(pinia);
 app.use(router);
 app.component("Loading", Loading);
 app.component("ClientLoading", ClientLoading);
+app.directive("animate-on-scroll", vAnimateOnScroll);
 app.mount("#app");
