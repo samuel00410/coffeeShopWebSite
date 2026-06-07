@@ -11,7 +11,7 @@
       </div>
 
       <!-- 內容 -->
-      <div class="relative">
+      <div class="relative" v-animate-on-scroll="'fade-up'">
         <div
           class="bg-white overflow-hidden rounded-4xl shadow-[0_8px_0_0_#FFE5D1] border-3 border-[#FFD4B0]"
         >

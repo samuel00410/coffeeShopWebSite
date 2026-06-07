@@ -1,6 +1,6 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
-import { vAnimateOnScroll } from "./directives/animeOnScroll.ts";
+import { vAnimateOnScroll } from "./directives/animateOnScroll";
 import "./assets/styles/all.css";
 import router from "./router";
 import App from "./App.vue";

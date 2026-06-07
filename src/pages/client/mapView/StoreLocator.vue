@@ -1,7 +1,14 @@
 <template>
   <section class="map-section relative px-6 py-20">
     <div class="container mx-auto">
-      <div class="text-center mb-16">
+      <div
+        class="text-center mb-16"
+        v-animate-on-scroll="{
+          effect: 'fade-right',
+          duration: 750,
+          delay: 200,
+        }"
+      >
         <div
           class="inline-flex items-center gap-4 bg-white rounded-full px-8 py-4 shadow-[0_6px_0_0_#E8DBC8] mb-10 border-4 border-[#4A3D2F] transform -rotate-1"
         >
@@ -12,10 +19,17 @@
       </div>
 
       <div class="flex flex-col lg:flex-row gap-6">
-        <div class="flex-1">
+        <div class="flex-1" v-animate-on-scroll="'fade-up'">
           <StoreMapView ref="mapRef" :stores="stores" />
         </div>
-        <div class="flex flex-row lg:flex-col gap-4 lg:w-[280px]">
+        <div
+          class="flex flex-row lg:flex-col gap-4 lg:w-[280px]"
+          v-animate-on-scroll="{
+            effect: 'fade-left',
+            duration: 800,
+            delay: 200,
+          }"
+        >
           <StoreCard
             v-for="store in stores"
             :key="store.id"
