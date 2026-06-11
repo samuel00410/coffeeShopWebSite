@@ -22,6 +22,7 @@ export function useProductRecommender() {
 
   async function recommend(answers: Answers) {
     isLoading.value = true;
+    error.value = null;
     try {
       const res = await api.get(`/api/${apiPath}/products/all`);
       if (res && res.data) {
